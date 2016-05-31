@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<import-steps>
+
+ <import-step
+    id="pm-amqp-postInstall"
+    handler="imio.zamqp.pm.setuphandlers.postInstall"
+    title="manual coded post-install for imio.zamqp.pm"
+    version="2016-05-21T15:00:00.000000">
+   manual coded post-install for imio.zamqp.pm
+ </import-step>
+
+</import-steps>

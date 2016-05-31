@@ -3,13 +3,5 @@
 from zope.interface import Interface
 
 
-class IInvoice(Interface):
-    """Marker interface for invoices"""
-
-
-class IIncomingMail(Interface):
-    """Marker interface for incoming mails"""
-
-
-class IOutgoingMail(Interface):
-    """Marker interface for outgoing mails"""
+class IIconifiedAnnex(Interface):
+    """Marker interface for iconified annexes"""
