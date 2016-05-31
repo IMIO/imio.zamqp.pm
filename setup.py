@@ -9,7 +9,7 @@ long_description = (
     + '\n')
 
 setup(
-    name='imio.zamqp.core',
+    name='imio.zamqp.pm',
     version=version,
     description="PloneMeeting specific methods tu use amqp",
     long_description=long_description,
