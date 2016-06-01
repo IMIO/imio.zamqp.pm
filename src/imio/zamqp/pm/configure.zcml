@@ -6,6 +6,8 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="imio.zamqp.pm">
 
+    <i18n:registerTranslations directory="locales" />
+
     <five:registerPackage package="." initialize=".initialize" />
     <include package="collective.zamqp" />
     <include package=".browser" />

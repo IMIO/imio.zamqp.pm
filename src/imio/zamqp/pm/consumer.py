@@ -10,6 +10,7 @@ from imio.zamqp.pm import interfaces
 from plone import api
 from plone.app.blob.tests.utils import makeFileUpload
 from Products.PloneMeeting.interfaces import IAnnexable
+from zope.i18n import translate
 
 
 class IconifiedAnnexConsumer(base.DMSConsumer, Consumer):
@@ -49,10 +50,12 @@ class IconifiedAnnex(DMSMainFile):
            until we are in dexterity use a FileUpload instance."""
         return makeFileUpload(self.file_content, self.obj.filename)
 
-    def _upload_file(self, document, obj_file):
-        new_file = IAnnexable(document).addAnnex(
+    def _upload_file(self, item, obj_file):
+        new_file = IAnnexable(item).addAnnex(
             idCandidate='scanned-signed-deliberation',
-            annex_title='Scanned signed deliberation',
+            annex_title=translate('Scanned signed deliberation',
+                                  domain='imio.zamqp.pm',
+                                  context=item.REQUEST),
             annex_file=obj_file,
             relatedTo='item_decision',
             meetingFileTypeUID=self.defaultDecisionFileType['meetingFileTypeObjectUID'])
