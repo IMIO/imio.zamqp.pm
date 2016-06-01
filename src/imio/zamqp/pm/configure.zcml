@@ -8,6 +8,7 @@
 
     <five:registerPackage package="." initialize=".initialize" />
     <include package="collective.zamqp" />
+    <include package=".browser" />
 
     <utility component=".consumer.IconifiedAnnexConsumerUtility"
              name="dms.deliberation"

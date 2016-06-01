@@ -1,16 +1,15 @@
 # encoding: utf-8
 
+import cPickle
 from collective.zamqp.consumer import Consumer
 from imio.zamqp.core import base
 from imio.zamqp.core.consumer import commit
 from imio.zamqp.core.consumer import DMSMainFile
+from imio.zamqp.core.consumer import log
 from imio.zamqp.pm import interfaces
 from plone import api
 from plone.app.blob.tests.utils import makeFileUpload
 from Products.PloneMeeting.interfaces import IAnnexable
-
-import logging
-log = logging.getLogger('imio.zamqp.pm')
 
 
 class IconifiedAnnexConsumer(base.DMSConsumer, Consumer):
@@ -23,10 +22,17 @@ IconifiedAnnexConsumerUtility = IconifiedAnnexConsumer()
 
 
 def consumeIconifiedAnnex(message, event):
-    # we need an item in Members/dgen/mymeetings/meeting-config-college named scan-ws-test-item
-    folder = ['Members', 'dgen', 'mymeetings', 'meeting-config-college', 'scan-ws-test-item']
-    annex = IconifiedAnnex(folder, '', message)
-    annex.create_or_update()
+    # find the item using the 'scan_id' given in message
+    scan_id = base.MessageAdapter(cPickle.loads(message.body)).metadata['scan_id']
+    catalog = api.portal.get_tool('portal_catalog')
+    brains = catalog(meta_type='MeetingItem', scan_id=scan_id)
+    item = None
+    if brains:
+        item = brains[0].getObject()
+        annex = IconifiedAnnex(item.getPhysicalPath(), '', message)
+        annex.create_or_update()
+    else:
+        log.warn("Could not find an item with scan_id '{0}'".format(scan_id))
     commit()
     message.ack()
 
@@ -65,3 +71,4 @@ class IconifiedAnnex(DMSMainFile):
         annex = self._upload_file(self.folder, self.obj_file)
         annex.scan_id = self.scan_fields.get('scan_id')
         annex.reindexObject(idxs=['scan_id'])
+        log.info('file has been created (scan_id: {0})'.format(annex.scan_id))

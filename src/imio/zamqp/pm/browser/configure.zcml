@@ -1,0 +1,14 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone">
+
+    <!-- document-generation view -->
+    <browser:page
+        for="Products.PloneMeeting.interfaces.IMeetingItem"
+        name="document-generation"
+        class=".overrides.AMQPPMDocumentGenerationView"
+        permission="zope2.View"
+        />
+
+</configure>
