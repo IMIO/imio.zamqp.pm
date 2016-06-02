@@ -53,7 +53,7 @@ class IconifiedAnnex(DMSMainFile):
     def _upload_file(self, item, obj_file):
         new_file = IAnnexable(item).addAnnex(
             idCandidate='scanned-signed-deliberation',
-            annex_title=translate('Scanned signed deliberation',
+            annex_title=translate("Scanned signed deliberation",
                                   domain='imio.zamqp.pm',
                                   context=item.REQUEST),
             annex_file=obj_file,
@@ -74,4 +74,4 @@ class IconifiedAnnex(DMSMainFile):
         annex = self._upload_file(self.folder, self.obj_file)
         annex.scan_id = self.scan_fields.get('scan_id')
         annex.reindexObject(idxs=['scan_id'])
-        log.info('file has been created (scan_id: {0})'.format(annex.scan_id))
+        log.info("file has been created (scan_id: {0})".format(annex.scan_id))
