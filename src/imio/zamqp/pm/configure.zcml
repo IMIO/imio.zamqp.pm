@@ -12,6 +12,7 @@
     <include package="collective.zamqp" />
     <include package=".browser" />
 
+
     <utility component=".consumer.IconifiedAnnexConsumerUtility"
              name="dms.deliberation"
              provides="collective.zamqp.interfaces.IConsumer"/>

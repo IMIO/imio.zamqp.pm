@@ -11,7 +11,7 @@ long_description = (
 setup(
     name='imio.zamqp.pm',
     version=version,
-    description="PloneMeeting specific methods tu use amqp",
+    description="PloneMeeting specific methods to use amqp",
     long_description=long_description,
     # Get more strings from
     # http://pypi.python.org/pypi?%3Aaction=list_classifiers
@@ -35,10 +35,13 @@ setup(
     zip_safe=False,
     install_requires=[
         'setuptools',
+        'imio.helpers[pdf]',
         'imio.zamqp.core',
+        'Products.PloneMeeting',
     ],
     extras_require={'test': ['plone.app.testing']},
     entry_points="""
-    # -*- Entry points: -*-
+    [z3c.autoinclude.plugin]
+    target = plone
     """,
 )

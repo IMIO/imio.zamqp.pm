@@ -3,6 +3,11 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:plone="http://namespaces.plone.org/plone">
 
+    <!-- Publish static files -->
+    <browser:resourceDirectory
+        name="imio.zamqp.pm"
+        directory="static" />
+
     <!-- document-generation view -->
     <browser:page
         for="Products.PloneMeeting.interfaces.IMeetingItem"
@@ -10,5 +15,12 @@
         class=".overrides.AMQPPMDocumentGenerationView"
         permission="zope2.View"
         />
+
+    <browser:view
+      for="imio.annex.content.annex.IAnnex"
+      name="insert-barcode"
+      class=".views.InsertBarcodeView"
+      permission="zope2.View"
+      />
 
 </configure>
