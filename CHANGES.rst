@@ -6,3 +6,5 @@ Changelog
 
 - Initial release.
   [gbastien]
+- Added `@@insert-barcode` view.
+  [gbastien]
