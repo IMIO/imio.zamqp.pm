@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<object name="annex" meta_type="Dexterity FTI" i18n:domain="imio.annex"
+   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <action title="Insert barcode"
+         action_id="insert_barcode"
+         category="object_buttons"
+         condition_expr="object/@@insert-barcode/may_insert_barcode"
+         description="Inserts a barcode in a PDF file."
+         icon_expr="string:${portal_url}/++resource++imio.zamqp.pm/barcode.png"
+         link_target=""
+         url_expr="string:${object/absolute_url}/@@insert-barcode"
+         visible="True">
+  <permission value="Modify portal content"/>
+ </action>
+</object>

@@ -1,0 +1,14 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="imio.zamqp.pm">
+
+    <!-- IPrettyLink -->
+    <adapter for="imio.annex.content.annex.IAnnex"
+             factory="imio.zamqp.pm.overrides.IZPMAnnexPrettyLinkAdapter"
+             provides="imio.prettylink.interfaces.IPrettyLink" />
+
+</configure>
