@@ -20,3 +20,8 @@ class IImioZamqpPMSettings(Interface):
         title=_(u'Value of y when inserting barcode into a PDF file.'),
         default=50,
     )
+
+    insert_barcode_scale_value = schema.Int(
+        title=_(u'Value of scale when inserting barcode into a PDF file.'),
+        default=4,
+    )

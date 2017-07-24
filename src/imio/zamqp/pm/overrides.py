@@ -2,7 +2,7 @@
 
 from zope.i18n import translate
 from imio.annex.adapters import AnnexPrettyLinkAdapter
-from imio.zamqp.pm import BARCODE_ATTR_ID
+from Products.PloneMeeting.config import BARCODE_INSERTED_ATTR_ID
 
 
 class IZPMAnnexPrettyLinkAdapter(AnnexPrettyLinkAdapter):
@@ -14,7 +14,7 @@ class IZPMAnnexPrettyLinkAdapter(AnnexPrettyLinkAdapter):
         """
         res = super(IZPMAnnexPrettyLinkAdapter, self)._leadingIcons()
         # display a 'barcode' icon if barcode is inserted in the file
-        if getattr(self.context, BARCODE_ATTR_ID, False):
+        if getattr(self.context, BARCODE_INSERTED_ATTR_ID, False):
             res.append(('++resource++imio.zamqp.pm/barcode.png',
                         translate('icon_help_barcode_inserted',
                                   domain="imio.zamqp.pm",

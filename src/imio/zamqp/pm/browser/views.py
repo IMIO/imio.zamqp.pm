@@ -2,7 +2,7 @@
 #
 # File: overrides.py
 #
-# Copyright (c) 2016 by Imio.be
+# Copyright (c) 2017 by Imio.be
 #
 # GNU General Public License (GPL)
 #
@@ -10,6 +10,7 @@
 from pyPdf.utils import PdfReadError
 
 from zope.i18n import translate
+
 from Products.CMFCore.permissions import ModifyPortalContent
 from Products.Five import BrowserView
 from plone import api
@@ -19,17 +20,17 @@ from plone.rfc822.interfaces import IPrimaryFieldInfo
 
 from imio.helpers.pdf import BarcodeStamp
 from imio.zamqp.core.utils import next_scan_id
-from imio.zamqp.pm import BARCODE_ATTR_ID
+from Products.PloneMeeting.config import BARCODE_INSERTED_ATTR_ID
 from imio.zamqp.pm.interfaces import IImioZamqpPMSettings
 
 
 class InsertBarcodeView(BrowserView):
     """ """
 
-    def __call__(self, x=None, y=None, force=False):
+    def __call__(self, x=None, y=None, scale=None, force=False):
         """ """
         plone_utils = api.portal.get_tool('plone_utils')
-        barcode_inserted = getattr(self.context, BARCODE_ATTR_ID, False)
+        barcode_inserted = getattr(self.context, BARCODE_INSERTED_ATTR_ID, False)
         # barcode already inserted?
         if barcode_inserted and not force:
             msg = translate('barcode_already_inserted',
@@ -49,7 +50,7 @@ class InsertBarcodeView(BrowserView):
             return self.request.RESPONSE.redirect(self.request['HTTP_REFERER'])
 
         # still not inserted (or force insert) and file is a PDF, proceed...
-        # manage x and y if it is None, get it from registry
+        # manage x, y and scale if it is None, get it from registry
         if not x:
             x = api.portal.get_registry_record(
                 'insert_barcode_x_value',
@@ -57,6 +58,10 @@ class InsertBarcodeView(BrowserView):
         if not y:
             y = api.portal.get_registry_record(
                 'insert_barcode_y_value',
+                interface=IImioZamqpPMSettings)
+        if not scale:
+            scale = api.portal.get_registry_record(
+                'insert_barcode_scale_value',
                 interface=IImioZamqpPMSettings)
 
         # if we do not check 'readers', the blob._p_blob_committed is sometimes None...
@@ -70,7 +75,7 @@ class InsertBarcodeView(BrowserView):
             self.context.scan_id = scan_id
         # generate barcode value
         scan_id_barcode = 'IMIO{0}'.format(scan_id)
-        barcode_stamp = BarcodeStamp(filepath, barcode_value=scan_id_barcode, x=x, y=y)
+        barcode_stamp = BarcodeStamp(filepath, barcode_value=scan_id_barcode, x=x, y=y, scale=scale)
         try:
             patched_file = barcode_stamp.stamp()
         except PdfReadError:
@@ -89,10 +94,12 @@ class InsertBarcodeView(BrowserView):
                           filename=self.context.file.filename))
 
         # success
-        setattr(self.context, BARCODE_ATTR_ID, True)
+        setattr(self.context, BARCODE_INSERTED_ATTR_ID, True)
         msg = translate('barcode_inserted',
                         domain='imio.zamqp.pm',
                         context=self.request)
+        # notify modified and return
+        self.context.notifyModified()
         plone_utils.addPortalMessage(msg)
         return self.request.RESPONSE.redirect(self.request['HTTP_REFERER'])
 
@@ -102,6 +109,6 @@ class InsertBarcodeView(BrowserView):
         if 'Manager' in api.user.get_roles():
             return True
 
-        barcode_inserted = getattr(self.context, 'BARCODE_ATTR_ID', False)
+        barcode_inserted = getattr(self.context, BARCODE_INSERTED_ATTR_ID, False)
         if barcode_inserted or not api.user.has_permission(ModifyPortalContent, self.context):
             return False
