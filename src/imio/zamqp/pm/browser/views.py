@@ -66,13 +66,13 @@ class InsertBarcodeView(BrowserView):
 
         # if we do not check 'readers', the blob._p_blob_committed is sometimes None...
         file_obj._blob.readers
-        filepath = file_obj._blob._p_blob_committed
+        # _p_blob_uncommitted is necessary especially for tests...
+        filepath = file_obj._blob._p_blob_committed or file_obj._blob._p_blob_uncommitted
         # get scan_id, or compute and store scan_id
         scan_id = self.context.scan_id
         if not scan_id:
             scan_id = next_scan_id(file_portal_types=['annex', 'annexDecision'],
                                    cliend_id_var='client_id', scan_type='3')
-            self.context.scan_id = scan_id
         # generate barcode value
         scan_id_barcode = 'IMIO{0}'.format(scan_id)
         barcode_stamp = BarcodeStamp(filepath, barcode_value=scan_id_barcode, x=x, y=y, scale=scale)
@@ -94,6 +94,7 @@ class InsertBarcodeView(BrowserView):
                           filename=self.context.file.filename))
 
         # success
+        self.context.scan_id = scan_id
         setattr(self.context, BARCODE_INSERTED_ATTR_ID, True)
         msg = translate('barcode_inserted',
                         domain='imio.zamqp.pm',
