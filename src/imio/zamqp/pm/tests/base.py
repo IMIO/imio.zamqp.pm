@@ -30,7 +30,9 @@ class BaseTestCase(unittest.TestCase):
     def corrupt_file_pdf(self):
         current_path = os.path.dirname(__file__)
         f = open(os.path.join(current_path, 'file_corrupt.pdf'), 'r')
-        return namedfile.NamedBlobFile(f.read(), filename=u'file_corrupt.pdf')
+        return namedfile.NamedBlobFile(f.read(),
+                                       contentType='application/pdf',
+                                       filename=u'file_corrupt.pdf')
 
     def setUp(self):
         self.maxDiff = None

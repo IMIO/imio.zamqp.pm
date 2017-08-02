@@ -101,6 +101,7 @@ class InsertBarcodeView(BrowserView):
                         context=self.request)
         # notify modified and return
         self.context.notifyModified()
+        self.context.reindexObject()
         plone_utils.addPortalMessage(msg)
         return self.request.RESPONSE.redirect(self.request['HTTP_REFERER'])
 
