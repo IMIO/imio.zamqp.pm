@@ -38,3 +38,7 @@ msgstr ""
 #. Default: "Value of scale when inserting barcode into a PDF file."
 msgid "Value of scale when inserting barcode into a PDF file."
 msgstr ""
+
+#. Default: "A barcode is inserted into this annex."
+msgid "icon_help_barcode_inserted"
+msgstr ""

@@ -38,6 +38,10 @@ msgstr ""
 msgid "barcode_insert_error"
 msgstr ""
 
-#. Default: "Barcode inserted successfully"
+#. Default: "Barcode inserted successfully!"
 msgid "barcode_inserted"
+msgstr ""
+
+#. Default: "A barcode is inserted into this annex."
+msgid "icon_help_barcode_inserted"
 msgstr ""

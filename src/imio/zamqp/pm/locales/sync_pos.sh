@@ -1,4 +1,4 @@
-files="imio.zamqp.pm"
+files="imio.zamqp.pm plone"
 languages="en fr"
 
 for file in $files; do

@@ -41,3 +41,7 @@ msgstr "Une erreur est survenue lors de l'insertion du code-barres dans le fichi
 #. Default: "Barcode inserted successfully!"
 msgid "barcode_inserted"
 msgstr "Code-barres inséré avec succès!"
+
+#. Default: "A barcode is inserted into this annex."
+msgid "icon_help_barcode_inserted"
+msgstr "Un code-barres a été inséré dans cette annexe"

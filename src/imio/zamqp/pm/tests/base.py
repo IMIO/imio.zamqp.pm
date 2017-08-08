@@ -38,6 +38,14 @@ class BaseTestCase(unittest.TestCase):
         self.maxDiff = None
         self.portal = self.layer['portal']
         self.request = self.layer['request']
+
+        # use default workflow
+        wftool = self.portal['portal_workflow']
+        wftool.setDefaultChain('simple_publication_workflow')
+        wftool.setChainForPortalTypes(
+            ('annex', 'annexDecision'),
+            ('simple_publication_workflow',))
+
         api.user.create(
             email='test@test.com',
             username='adminuser',

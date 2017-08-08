@@ -112,10 +112,12 @@ class InsertBarcodeView(BrowserView):
 
     def may_insert_barcode(self):
         """ """
+        member = api.user.get_current()
         # bypass for 'Manager'
-        if 'Manager' in api.user.get_roles():
+        if 'Manager' in member.getRoles():
             return True
 
         barcode_inserted = getattr(self.context, BARCODE_INSERTED_ATTR_ID, False)
-        if barcode_inserted or not api.user.has_permission(ModifyPortalContent, self.context):
+        if barcode_inserted or not member.has_permission(ModifyPortalContent, self.context):
             return False
+        return True
