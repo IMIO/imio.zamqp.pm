@@ -2,6 +2,6 @@
 <metadata>
   <version>1</version>
   <dependencies>
-    <dependency>profile-imio.annex:default</dependency>
+    <dependency>profile-imio.annex:zamqp</dependency>
   </dependencies>
 </metadata>
