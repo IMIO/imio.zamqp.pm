@@ -35,7 +35,8 @@ class InsertBarcodeView(BrowserView):
         if barcode_inserted and not force:
             msg = translate('barcode_already_inserted',
                             domain='imio.zamqp.pm',
-                            context=self.request)
+                            context=self.request,
+                            default="Barcode already inserted!")
             plone_utils.addPortalMessage(msg, type='error')
             return self.request.RESPONSE.redirect(self.request['HTTP_REFERER'])
 
@@ -45,8 +46,9 @@ class InsertBarcodeView(BrowserView):
         if not file_obj.contentType == 'application/pdf':
             msg = translate('barcode_file_must_be_pdf',
                             domain='imio.zamqp.pm',
-                            context=self.request)
-            plone_utils.addPortalMessage(msg, type='warning')
+                            context=self.request,
+                            default="Barcode can only be inserted in a PDF file!")
+            plone_utils.addPortalMessage(msg, type='error')
             return self.request.RESPONSE.redirect(self.request['HTTP_REFERER'])
 
         # still not inserted (or force insert) and file is a PDF, proceed...
@@ -81,7 +83,9 @@ class InsertBarcodeView(BrowserView):
         except PdfReadError:
             msg = translate('barcode_insert_error',
                             domain='imio.zamqp.pm',
-                            context=self.request)
+                            context=self.request,
+                            default="An error occured while inserting the barcode into "
+                            "the PDF file, please check the file!")
             plone_utils.addPortalMessage(msg, type='error')
             return self.request.RESPONSE.redirect(self.request['HTTP_REFERER'])
         patched_file.seek(0)
@@ -98,7 +102,8 @@ class InsertBarcodeView(BrowserView):
         setattr(self.context, BARCODE_INSERTED_ATTR_ID, True)
         msg = translate('barcode_inserted',
                         domain='imio.zamqp.pm',
-                        context=self.request)
+                        context=self.request,
+                        default="Barcode inserted successfully!")
         # notify modified and return
         self.context.notifyModified()
         self.context.reindexObject()

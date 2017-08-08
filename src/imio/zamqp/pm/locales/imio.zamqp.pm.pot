@@ -11,5 +11,30 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: imio.zamqp.pm\n"
 
-msgid "Scanned signed deliberation"
+#. Default: "Barcode already inserted!"
+msgid "barcode_already_inserted"
+msgstr ""
+
+#. Default: "Barcode can only be inserted in a PDF file!"
+msgid "barcode_file_must_be_pdf"
+msgstr ""
+
+#. Default: "An error occured while inserting the barcode into the PDF file, please check the file!"
+msgid "barcode_insert_error"
+msgstr ""
+
+#. Default: "Barcode inserted successfully!"
+msgid "barcode_inserted"
+msgstr ""
+
+#. Default: "Value of x when inserting barcode into a PDF file."
+msgid "Value of x when inserting barcode into a PDF file."
+msgstr ""
+
+#. Default: "Value of y when inserting barcode into a PDF file."
+msgid "Value of y when inserting barcode into a PDF file."
+msgstr ""
+
+#. Default: "Value of scale when inserting barcode into a PDF file."
+msgid "Value of scale when inserting barcode into a PDF file."
 msgstr ""

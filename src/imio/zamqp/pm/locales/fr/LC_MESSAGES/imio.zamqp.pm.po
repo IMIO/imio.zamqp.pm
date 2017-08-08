@@ -14,6 +14,30 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: DOMAIN\n"
 
-msgid "Scanned signed deliberation"
-msgstr "Délibération signée"
+#. Default: "Value of scale when inserting barcode into a PDF file."
+msgid "Value of scale when inserting barcode into a PDF file."
+msgstr "Valeur du paramètre 'scale' lors de l'insertion du code-barres dans un fichier PDF."
 
+#. Default: "Value of x when inserting barcode into a PDF file."
+msgid "Value of x when inserting barcode into a PDF file."
+msgstr "Valeur du paramètre 'x' lors de l'insertion du code-barres dans un fichier PDF."
+
+#. Default: "Value of y when inserting barcode into a PDF file."
+msgid "Value of y when inserting barcode into a PDF file."
+msgstr "Valeur du paramètre 'y' lors de l'insertion du code-barres dans un fichier PDF."
+
+#. Default: "Barcode already inserted!"
+msgid "barcode_already_inserted"
+msgstr "Un code-barres a déjà été inséré dans ce fichier!"
+
+#. Default: "Barcode can only be inserted in a PDF file!"
+msgid "barcode_file_must_be_pdf"
+msgstr "Un code-barres ne peut être inséré que dans un fichier au format PDF!"
+
+#. Default: "An error occured while inserting the barcode into the PDF file, please check the file!"
+msgid "barcode_insert_error"
+msgstr "Une erreur est survenue lors de l'insertion du code-barres dans le fichier PDF, veuillez vérifier le fichier!"
+
+#. Default: "Barcode inserted successfully!"
+msgid "barcode_inserted"
+msgstr "Code-barres inséré avec succès!"
