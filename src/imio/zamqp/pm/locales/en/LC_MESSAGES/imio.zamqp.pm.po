@@ -16,32 +16,32 @@ msgstr ""
 
 #. Default: "Value of scale when inserting barcode into a PDF file."
 msgid "Value of scale when inserting barcode into a PDF file."
-msgstr ""
+msgstr "Value of scale when inserting barcode into a PDF file."
 
 #. Default: "Value of x when inserting barcode into a PDF file."
 msgid "Value of x when inserting barcode into a PDF file."
-msgstr ""
+msgstr "Value of x when inserting barcode into a PDF file."
 
 #. Default: "Value of y when inserting barcode into a PDF file."
 msgid "Value of y when inserting barcode into a PDF file."
-msgstr ""
+msgstr "Value of y when inserting barcode into a PDF file."
 
 #. Default: "Barcode already inserted!"
 msgid "barcode_already_inserted"
-msgstr ""
+msgstr "Barcode already inserted!"
 
 #. Default: "Barcode can only be inserted in a PDF file!"
 msgid "barcode_file_must_be_pdf"
-msgstr ""
+msgstr "Barcode can only be inserted in a PDF file!"
 
 #. Default: "An error occured while inserting the barcode into the PDF file, please check the file!"
 msgid "barcode_insert_error"
-msgstr ""
+msgstr "An error occured while inserting the barcode into the PDF file, please check the file!"
 
 #. Default: "Barcode inserted successfully!"
 msgid "barcode_inserted"
-msgstr ""
+msgstr "Barcode inserted successfully!"
 
 #. Default: "A barcode is inserted into this annex."
 msgid "icon_help_barcode_inserted"
-msgstr ""
+msgstr "A barcode is inserted into this annex."
