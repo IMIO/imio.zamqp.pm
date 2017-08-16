@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from plone import api
-from plone.app.testing import login
-from plone.app.testing import TEST_USER_NAME
 from Products.CMFCore.permissions import ModifyPortalContent
 from Products.PloneMeeting.config import BARCODE_INSERTED_ATTR_ID
 from Products.PloneMeeting.utils import cleanMemoize
@@ -99,21 +97,28 @@ class TestInsertBarcodeView(BaseTestCase):
             '013999900000002')
 
     def test_may_insert_barcode(self):
-        """Must be able to edit the element to insert the barcode."""
+        """Must be (Meeting)Manager able to edit the element to insert the barcode."""
         # Manager may always insert barcode
         manager_user = api.user.get_current()
         self.assertTrue('Manager' in manager_user.getRoles())
         self.assertTrue(self.view.may_insert_barcode())
 
         # as normal user not able to edit
-        login(self.portal, TEST_USER_NAME)
-        normal_user = api.user.get_current()
-        self.assertFalse(normal_user.has_permission(ModifyPortalContent, self.view.context))
+        self.changeUser('pmCreator1')
+        self.assertFalse(self.member.has_permission(ModifyPortalContent, self.view.context))
         self.assertFalse(self.view.may_insert_barcode())
 
         # give user ability to edit element
-        self.view.context.manage_setLocalRoles(normal_user.getId(), ('Editor', ))
+        self.view.context.manage_setLocalRoles(self.member.getId(), ('Editor', ))
         # clean borg.localroles
         cleanMemoize(self.portal, prefixes=['borg.localrole.workspace.checkLocalRolesAllowed'])
-        self.assertTrue(normal_user.has_permission(ModifyPortalContent, self.view.context))
+        self.assertTrue(self.member.has_permission(ModifyPortalContent, self.view.context))
+        self.assertFalse(self.view.may_insert_barcode())
+
+        # now as MeetingManager
+        self.changeUser('pmManager')
+        self.view.context.manage_setLocalRoles(self.member.getId(), ('MeetingManager', 'Editor'))
+        # clean borg.localroles
+        cleanMemoize(self.portal, prefixes=['borg.localrole.workspace.checkLocalRolesAllowed'])
+        self.assertTrue(self.member.has_permission(ModifyPortalContent, self.view.context))
         self.assertTrue(self.view.may_insert_barcode())

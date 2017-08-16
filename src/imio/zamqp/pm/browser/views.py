@@ -111,13 +111,17 @@ class InsertBarcodeView(BrowserView):
         return self.request.RESPONSE.redirect(self.request['HTTP_REFERER'])
 
     def may_insert_barcode(self):
-        """ """
+        """By default, must be (Meeting)Manager to include barcode and
+           barcode must not be already inserted."""
         member = api.user.get_current()
         # bypass for 'Manager'
         if 'Manager' in member.getRoles():
             return True
 
+        tool = api.portal.get_tool('portal_plonemeeting')
+        isManager = tool.isManager(self.context)
+
         barcode_inserted = getattr(self.context, BARCODE_INSERTED_ATTR_ID, False)
-        if barcode_inserted or not member.has_permission(ModifyPortalContent, self.context):
+        if not isManager or barcode_inserted or not member.has_permission(ModifyPortalContent, self.context):
             return False
         return True

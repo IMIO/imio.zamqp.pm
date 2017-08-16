@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 
 import os
-import unittest
 
 from plone import api
 from plone import namedfile
 from plone.app.testing import login
 
 from imio.zamqp.pm import testing
+from Products.PloneMeeting.tests.PloneMeetingTestCase import PloneMeetingTestCase
 
 
-class BaseTestCase(unittest.TestCase):
+class BaseTestCase(PloneMeetingTestCase):
 
     layer = testing.AMQP_PM_TESTING_PROFILE_FUNCTIONAL
 
@@ -35,6 +35,7 @@ class BaseTestCase(unittest.TestCase):
                                        filename=u'file_corrupt.pdf')
 
     def setUp(self):
+        super(BaseTestCase, self).setUp()
         self.maxDiff = None
         self.portal = self.layer['portal']
         self.request = self.layer['request']
@@ -49,7 +50,7 @@ class BaseTestCase(unittest.TestCase):
         api.user.create(
             email='test@test.com',
             username='adminuser',
-            password='secret',
+            password='Secret_123',
         )
         api.user.grant_roles(
             username='adminuser',

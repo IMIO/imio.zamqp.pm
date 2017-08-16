@@ -40,7 +40,10 @@ AMQP_PM_Z2 = z2.IntegrationTesting(
 AMQP_PM_TESTING_PROFILE = ImioZamqpPMLayer(
     zcml_filename="testing.zcml",
     zcml_package=imio.zamqp.pm,
-    additional_z2_products=['imio.zamqp.core', 'collective.dms.scanbehavior'],
+    additional_z2_products=['imio.dashboard',
+                            'Products.PloneMeeting',
+                            'Products.PasswordStrength',
+                            'Products.CMFPlacefulWorkflow'],
     gs_profile_id='imio.zamqp.pm:testing',
     name="AMQP_PM_TESTING_PROFILE")
 

@@ -3,5 +3,6 @@
   <version>test</version>
   <dependencies>
     <dependency>profile-imio.zamqp.pm:default</dependency>
+    <dependency>profile-Products.PloneMeeting:testing</dependency>
   </dependencies>
 </metadata>
