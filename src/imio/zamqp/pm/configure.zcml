@@ -12,14 +12,25 @@
     <include package="collective.zamqp" />
     <include package=".browser" />
 
+    <utility provides="plone.supermodel.parser.ISchemaPolicy"
+             name="category_zamqp_schema_policy"
+             factory=".overrides.CategoryZamqpSchemaPolicy" />
 
+    <utility provides="plone.supermodel.parser.ISchemaPolicy"
+             name="subcategory_zamqp_schema_policy"
+             factory=".overrides.SubcategoryZamqpSchemaPolicy" />
+
+    <utility provides="zope.schema.interfaces.IVocabularyFactory"
+             factory=".overrides.AfterScanChangeAnnexTypeToVocabulary"
+             name="imio.zamqp.pm.after_scan_change_annex_type_to_vocabulary" />
+    
     <utility component=".consumer.IconifiedAnnexConsumerUtility"
              name="dms.deliberation"
-             provides="collective.zamqp.interfaces.IConsumer"/>
+             provides="collective.zamqp.interfaces.IConsumer" />
 
     <subscriber for=".interfaces.IIconifiedAnnex
                      collective.zamqp.interfaces.IMessageArrivedEvent"
-                handler=".consumer.consumeIconifiedAnnex"/>
+                handler=".consumer.consumeIconifiedAnnex" />
 
     <!-- Indexes -->
     <adapter name="scan_id" factory=".indexes.scan_id" />

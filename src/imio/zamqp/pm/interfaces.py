@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+from collective.iconifiedcategory.content.category import ICategory
+from collective.iconifiedcategory.content.subcategory import ISubcategory
 from imio.zamqp.pm import _
 from zope.interface import Interface
 from zope import schema
@@ -7,6 +9,25 @@ from zope import schema
 
 class IIconifiedAnnex(Interface):
     """Marker interface for iconified annexes"""
+
+
+class IAnnexTypeZamqp(Interface):
+    """Specific fields when using zamqp"""
+
+    after_scan_change_annex_type_to = schema.Choice(
+        title=_(u'after_scan_change_annex_type_to_title'),
+        description=_(u"after_scan_change_annex_type_to_descr"),
+        vocabulary=u'imio.zamqp.pm.after_scan_change_annex_type_to_vocabulary',
+        required=False,
+        )
+
+
+class ICategoryZamqp(ICategory, IAnnexTypeZamqp):
+    """Specific fields when using zamqp"""
+
+
+class ISubcategoryZamqp(ISubcategory, IAnnexTypeZamqp):
+    """Specific fields when using zamqp"""
 
 
 class IImioZamqpPMSettings(Interface):

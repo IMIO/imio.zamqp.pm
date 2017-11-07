@@ -2,20 +2,17 @@
 #
 # File: setuphandlers.py
 #
-# Copyright (c) 2016 by Imio.be
+# Copyright (c) 2017 by Imio.be
 #
 # GNU General Public License (GPL)
 #
 
-__author__ = """Gauthier BASTIEN <g.bastien@imio.be>"""
-__docformat__ = 'plaintext'
-
 
 import logging
-logger = logging.getLogger('imio.zamqp.pm: setuphandlers')
-
 from imio.helpers.catalog import addOrUpdateIndexes
 from imio.helpers.catalog import addOrUpdateColumns
+
+logger = logging.getLogger('imio.zamqp.pm: setuphandlers')
 
 indexInfos = {
     'scan_id': ('FieldIndex', {}),
