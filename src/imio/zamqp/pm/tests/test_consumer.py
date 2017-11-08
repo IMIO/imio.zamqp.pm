@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from collective.zamqp.message import Message
-from imio.zamqp.core.utils import next_scan_id
 from imio.zamqp.pm.tests.base import BaseTestCase
+from imio.zamqp.pm.utils import next_scan_id_pm
 
 DEFAULT_SCAN_ID = '013999900000001'
 
@@ -11,14 +11,20 @@ DEFAULT_BODY_PATTERN = """ccopy_reg\n_reconstructor\np1\n(cimio.dataexchange.cor
 
 class TestConsumer(BaseTestCase):
 
-    def setUp(self):
-        super(TestConsumer, self).setUp()
-
     def _get_consumer_object(self, scan_id=None):
         """ """
         from imio.zamqp.pm.consumer import IconifiedAnnex
+
+        class TestingIconifiedAnnexConsumer(IconifiedAnnex):
+            """Mock the consumer as the file_content method is doing an HTTP request
+               to get the file and we do not want that..."""
+
+            @property
+            def file_content(self):
+                return 'New file content'
+
         msg = Message(body=DEFAULT_BODY_PATTERN.format(scan_id or '013999900000001'))
-        annex_updater = IconifiedAnnex(folder='', document_type='', message=msg)
+        annex_updater = TestingIconifiedAnnexConsumer(folder='', document_type='', message=msg)
         return annex_updater
 
     def test_consumer_can_not_create(self):
@@ -28,11 +34,35 @@ class TestConsumer(BaseTestCase):
 
     def test_consumer_update(self):
         """Create an item with annexes and update it."""
-        # annex_updater = self._get_consumer_object()
+        annex_updater = self._get_consumer_object()
         self.changeUser('pmCreator1')
         item = self.create('MeetingItem')
-        annex = self.addAnnex(item)
-        # annex_modified = annex.modified()
-        # annex_file_size = annex.file.getSize()
-        annex.scan_id = next_scan_id()
-        annex.reindexObject(idxs=['scan_id'])
+        annex1 = self.addAnnex(item)
+        annex1_modified = annex1.modified()
+        annex1_file_size = annex1.file.getSize()
+        annex2 = self.addAnnex(item)
+        annex2_modified = annex2.modified()
+        annex2_file_size = annex2.file.getSize()
+
+        # nothing is done when annex with relevant scan_id is not found
+        annex_updater.create_or_update()
+        self.assertEqual(annex1.modified(), annex1_modified)
+        self.assertEqual(annex1.file.getSize(), annex1_file_size)
+        self.assertEqual(annex2.modified(), annex2_modified)
+        self.assertEqual(annex2.file.getSize(), annex2_file_size)
+
+        # now apply a scan_id, reindex annex 'scan_id' index and check
+        # correct annex will be updated
+        annex1.scan_id = next_scan_id_pm()
+        annex1.reindexObject(idxs=['scan_id'])
+        self.assertEqual(annex1.scan_id, DEFAULT_SCAN_ID)
+        annex2.scan_id = next_scan_id_pm()
+        annex2.reindexObject(idxs=['scan_id'])
+        self.assertNotEqual(annex2.scan_id, DEFAULT_SCAN_ID)
+        # correct annex file was updated
+        annex_updater.create_or_update()
+        self.assertNotEqual(annex1.modified(), annex1_modified)
+        self.assertNotEqual(annex1.file.getSize(), annex1_file_size)
+        # annex2 was not updated
+        self.assertEqual(annex2.modified(), annex2_modified)
+        self.assertEqual(annex2.file.getSize(), annex2_file_size)

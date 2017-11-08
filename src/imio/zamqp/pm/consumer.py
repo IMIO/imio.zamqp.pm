@@ -41,6 +41,11 @@ class IconifiedAnnex(DMSMainFile):
     def _manage_after_scan_change_annex_type_to(self, the_file):
         """ """
         annex_type = get_category_object(the_file, the_file.content_category)
+        after_scan_change_annex_type_to = annex_type.after_scan_change_annex_type_to
+        # can not query on 'None'
+        if not after_scan_change_annex_type_to:
+            return
+
         brains = api.content.find(UID=annex_type.after_scan_change_annex_type_to)
         if not brains:
             return

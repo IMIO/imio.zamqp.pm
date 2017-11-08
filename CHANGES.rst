@@ -14,3 +14,7 @@ Changelog
   file is updated and make it configurable on the `ContentCategory` object thru
   the `after_scan_change_annex_type_to` field.
   [gbastien]
+- Use helper `imio.zamqp.pm.utils.next_scan_id_pm` that calls
+ `imio.zamqp.core.utils.next_scan_id` to be sure that relevant parameters are
+  always passed correctly.
+  [gbastien]

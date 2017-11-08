@@ -19,7 +19,7 @@ from plone.namedfile.file import NamedBlobFile
 from plone.rfc822.interfaces import IPrimaryFieldInfo
 
 from imio.helpers.pdf import BarcodeStamp
-from imio.zamqp.core.utils import next_scan_id
+from imio.zamqp.pm.utils import next_scan_id_pm
 from Products.PloneMeeting.config import BARCODE_INSERTED_ATTR_ID
 from imio.zamqp.pm.interfaces import IImioZamqpPMSettings
 
@@ -73,8 +73,7 @@ class InsertBarcodeView(BrowserView):
         # get scan_id, or compute and store scan_id
         scan_id = self.context.scan_id
         if not scan_id:
-            scan_id = next_scan_id(file_portal_types=['annex', 'annexDecision'],
-                                   cliend_id_var='client_id', scan_type='3')
+            scan_id = next_scan_id_pm()
         # generate barcode value
         scan_id_barcode = 'IMIO{0}'.format(scan_id)
         barcode_stamp = BarcodeStamp(filepath, barcode_value=scan_id_barcode, x=x, y=y, scale=scale)

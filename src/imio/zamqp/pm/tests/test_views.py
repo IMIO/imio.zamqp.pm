@@ -5,7 +5,7 @@ from Products.CMFCore.permissions import ModifyPortalContent
 from Products.PloneMeeting.config import BARCODE_INSERTED_ATTR_ID
 from Products.PloneMeeting.utils import cleanMemoize
 from Products.statusmessages.interfaces import IStatusMessage
-from imio.zamqp.core.utils import next_scan_id
+from imio.zamqp.pm.utils import next_scan_id_pm
 from imio.zamqp.pm.tests.base import BaseTestCase
 from zope.i18n import translate
 
@@ -92,9 +92,7 @@ class TestInsertBarcodeView(BaseTestCase):
         self.assertIsNone(self.view.context.scan_id)
         self._check_barcode_inserted_correctly()
         self.assertEqual(self.view.context.scan_id, DEFAULT_SCAN_ID)
-        self.assertEqual(next_scan_id(
-            file_portal_types=['annex', 'annexDecision']),
-            '013999900000002')
+        self.assertEqual(next_scan_id_pm(), '013999900000002')
 
     def test_may_insert_barcode(self):
         """Must be (Meeting)Manager able to edit the element to insert the barcode."""
