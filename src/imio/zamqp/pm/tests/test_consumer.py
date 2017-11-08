@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
+from collective.iconifiedcategory.utils import get_category_object
 from collective.zamqp.message import Message
 from imio.zamqp.pm.tests.base import BaseTestCase
 from imio.zamqp.pm.utils import next_scan_id_pm
+from plone import api
 
 DEFAULT_SCAN_ID = '013999900000001'
 
@@ -66,3 +68,40 @@ class TestConsumer(BaseTestCase):
         # annex2 was not updated
         self.assertEqual(annex2.modified(), annex2_modified)
         self.assertEqual(annex2.file.getSize(), annex2_file_size)
+
+    def test_consumer_manage_after_scan_change_annex_type_to(self):
+        """When an annex is updated by the consumer, it is possible to change
+           it's annex_type, test this.
+           This is done defining the after_scan_change_annex_type_to field on the
+           used annex_type."""
+        annex_updater = self._get_consumer_object()
+        self.changeUser('pmCreator1')
+        item = self.create('MeetingItem')
+        annex = self.addAnnex(item)
+        annex_uid = annex.UID()
+        annex.scan_id = next_scan_id_pm()
+        annex.reindexObject(idxs=['scan_id'])
+        original_annex_type = get_category_object(annex, annex.content_category)
+        original_annex_type_uid = original_annex_type.UID()
+        self.assertEqual(original_annex_type.id, 'financial-analysis')
+        self.assertEqual(
+            original_annex_type_uid,
+            annex.categorized_elements[annex_uid]['category_uid'])
+
+        # get another annex_type and set it as after_scan_change_annex_type_to
+        another_annex_type = original_annex_type.aq_parent.get('budget-analysis')
+        another_annex_type_uid = another_annex_type.UID()
+        original_annex_type.after_scan_change_annex_type_to = another_annex_type.UID()
+
+        # when updated, annex_type is changed
+        annex_updater.create_or_update()
+        new_annex_type = get_category_object(annex, annex.content_category)
+        self.assertEqual(new_annex_type.id, another_annex_type.id)
+        # everything is correctly updated, including index and categorized_elements dict
+        # index updated
+        self.assertTrue(api.content.find(content_category_uid=another_annex_type_uid))
+        self.assertFalse(api.content.find(content_category_uid=original_annex_type_uid))
+        # categorized_elements
+        self.assertEqual(
+            another_annex_type_uid,
+            annex.categorized_elements[annex_uid]['category_uid'])
