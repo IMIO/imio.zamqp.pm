@@ -32,11 +32,12 @@ setup(
     zip_safe=False,
     install_requires=[
         'setuptools',
+        'collective.dms.scanbehavior',
         'imio.helpers[pdf]',
         'imio.zamqp.core',
         'Products.PloneMeeting',
     ],
-    extras_require={'test': ['plone.app.testing']},
+    extras_require={'test': ['Products.PloneMeeting[test]']},
     entry_points="""
     [z3c.autoinclude.plugin]
     target = plone
