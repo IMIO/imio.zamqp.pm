@@ -5,6 +5,7 @@ from Products.CMFCore.permissions import ModifyPortalContent
 from Products.PloneMeeting.config import BARCODE_INSERTED_ATTR_ID
 from Products.PloneMeeting.utils import cleanMemoize
 from Products.statusmessages.interfaces import IStatusMessage
+from imio.prettylink.interfaces import IPrettyLink
 from imio.zamqp.pm.utils import next_scan_id_pm
 from imio.zamqp.pm.tests.base import BaseTestCase
 from zope.i18n import translate
@@ -120,3 +121,18 @@ class TestInsertBarcodeView(BaseTestCase):
         cleanMemoize(self.portal, prefixes=['borg.localrole.workspace.checkLocalRolesAllowed'])
         self.assertTrue(self.member.has_permission(ModifyPortalContent, self.view.context))
         self.assertTrue(self.view.may_insert_barcode())
+
+    def test_leadingIcons_barcode(self):
+        """When a barcode is inserted into a file, a relevant leading icon is displayed."""
+        self.changeUser('pmCreator1')
+        item = self.create('MeetingItem')
+        # use a PDF file
+        self.annexFile = u'file_correct.pdf'
+        annex = self.addAnnex(item)
+        view = annex.restrictedTraverse('@@insert-barcode')
+
+        # for now, no barcode
+        self.assertFalse('barcode.png' in IPrettyLink(annex).getLink())
+        # insert barcode and check
+        view()
+        self.assertTrue('barcode.png' in IPrettyLink(annex).getLink())

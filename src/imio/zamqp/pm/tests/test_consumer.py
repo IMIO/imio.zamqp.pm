@@ -88,6 +88,27 @@ class TestConsumer(BaseTestCase):
             original_annex_type_uid,
             annex.categorized_elements[annex_uid]['category_uid'])
 
+        # nothing done if nothing defined
+        self.assertIsNone(original_annex_type.after_scan_change_annex_type_to)
+        annex_updater.create_or_update()
+        # annex find in catalog and categorized_elements correct
+        self.assertTrue(api.content.find(content_category_uid=original_annex_type_uid))
+        # categorized_elements
+        self.assertEqual(
+            original_annex_type_uid,
+            annex.categorized_elements[annex_uid]['category_uid'])
+
+        # wrong value in after_scan_change_annex_type_to like a removed annex_type
+        # does not break
+        original_annex_type.after_scan_change_annex_type_to = 'some_removed_uid'
+        annex_updater.create_or_update()
+        # annex find in catalog and categorized_elements correct
+        self.assertTrue(api.content.find(content_category_uid=original_annex_type_uid))
+        # categorized_elements
+        self.assertEqual(
+            original_annex_type_uid,
+            annex.categorized_elements[annex_uid]['category_uid'])
+
         # get another annex_type and set it as after_scan_change_annex_type_to
         another_annex_type = original_annex_type.aq_parent.get('budget-analysis')
         another_annex_type_uid = another_annex_type.UID()
