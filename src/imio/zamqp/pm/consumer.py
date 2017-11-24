@@ -61,7 +61,9 @@ class IconifiedAnnex(DMSMainFile):
         the_file.to_sign = True
         the_file.signed = True
         notify(ObjectModifiedEvent(the_file))
-        logger.info("File with scan_id \"{0}\" was updated!".format(self.scan_fields['scan_id']))
+        logger.info("File at \"{0}\" with scan_id \"{1}\" was updated!".format(
+            "/".join(the_file.getPhysicalPath()),
+            self.scan_fields['scan_id']))
 
     def create(self, obj_file):
         """ """
