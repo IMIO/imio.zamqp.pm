@@ -1,11 +1,11 @@
+include *.cfg
 include *.py
 include *.rst
 include .travis.yml
-include buildout.cfg
-include versions.cfg
-include sources.cfg
 include Makefile
-include config.ini
+recursive-include src *.pdf
+recursive-include src *.png
+recursive-include src *.sh
 recursive-include docs *.txt
 recursive-include docs *.GPL
 recursive-include docs *.rst
