@@ -3,5 +3,5 @@
 Introduction
 ============
 
-Products.PloneMeeting specific methods tu use amqp, rely on imio.zamqp.core
+Products.PloneMeeting specific methods to use amqp (collective.zamqp), rely on imio.zamqp.core
 
