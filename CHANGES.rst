@@ -4,8 +4,8 @@ Changelog
 0.2 (unreleased)
 ----------------
 
-- Nothing changed yet.
-
+- Added `scan_id` to `AMQPPMDocumentGenerationView.get_base_generation_context`.
+  [gbastien]
 
 0.1 (2017-11-27)
 ----------------

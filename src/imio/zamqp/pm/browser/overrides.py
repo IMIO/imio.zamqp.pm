@@ -18,5 +18,7 @@ class AMQPPMDocumentGenerationView(PMDocumentGenerationView):
     def get_base_generation_context(self):
         """ """
         specific_context = super(AMQPPMDocumentGenerationView, self).get_base_generation_context()
+        helper_view = self.get_generation_context_helper()
         specific_context['zamqp_utils'] = zamqp_utils
+        specific_context['scan_id'] = helper_view.get_scan_id()
         return specific_context

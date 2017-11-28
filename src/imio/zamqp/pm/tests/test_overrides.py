@@ -13,6 +13,7 @@ class TestOverrides(BaseTestCase):
         view = item.restrictedTraverse('@@document-generation')
         # zamqp_utils
         self.assertTrue('zamqp_utils' in view.get_base_generation_context())
+        self.assertTrue('scan_id' in view.get_base_generation_context())
         # in addition to values added by PloneMeeting
         self.assertTrue('tool' in view.get_base_generation_context())
         self.assertTrue('meetingConfig' in view.get_base_generation_context())
