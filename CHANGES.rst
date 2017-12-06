@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.3 (unreleased)
+0.3 (2017-12-06)
 ----------------
 
 - In field `after_scan_change_annex_type_to`, added possibility to select an
