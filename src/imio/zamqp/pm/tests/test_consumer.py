@@ -112,7 +112,7 @@ class TestConsumer(BaseTestCase):
         # get another annex_type and set it as after_scan_change_annex_type_to
         another_annex_type = original_annex_type.aq_parent.get('budget-analysis')
         another_annex_type_uid = another_annex_type.UID()
-        original_annex_type.after_scan_change_annex_type_to = another_annex_type.UID()
+        original_annex_type.after_scan_change_annex_type_to = another_annex_type_uid
 
         # when updated, annex_type is changed
         annex_updater.create_or_update()
@@ -126,3 +126,76 @@ class TestConsumer(BaseTestCase):
         self.assertEqual(
             another_annex_type_uid,
             annex.categorized_elements[annex_uid]['category_uid'])
+
+    def test_consumer_manage_after_scan_change_to_other_category_group(self):
+        """When annex_type is changed, if it is an item annex, it can be changed from
+           item_annex to item_decision_annex and the other way round."""
+        self.changeUser('pmCreator1')
+        item = self.create('MeetingItem')
+        annex = self.addAnnex(item)
+        annex_uid = annex.UID()
+        annex.scan_id = next_scan_id_pm()
+        annex.reindexObject(idxs=['scan_id'])
+        annex_decision = self.addAnnex(item, relatedTo='item_decision')
+        annex_decision_uid = annex_decision.UID()
+        annex_decision.scan_id = next_scan_id_pm()
+        annex_decision.reindexObject(idxs=['scan_id'])
+        annex_updater = self._get_consumer_object(scan_id=annex.scan_id)
+        annex_decision_updater = self._get_consumer_object(scan_id=annex_decision.scan_id)
+
+        # annex
+        self.assertEqual(annex.portal_type, 'annex')
+        original_annex_type = get_category_object(annex, annex.content_category)
+        original_annex_type_uid = original_annex_type.UID()
+        self.assertEqual(original_annex_type.id, 'financial-analysis')
+        self.assertEqual(
+            original_annex_type_uid,
+            annex.categorized_elements[annex_uid]['category_uid'])
+        self.assertEqual(
+            original_annex_type.get_category_group().getId(), 'item_annexes')
+        # annex_decision
+        self.assertEqual(annex_decision.portal_type, 'annexDecision')
+        original_annex_decision_type = get_category_object(annex_decision, annex_decision.content_category)
+        original_annex_decision_type_uid = original_annex_decision_type.UID()
+        self.assertEqual(original_annex_decision_type.id, 'decision-annex')
+        self.assertEqual(
+            original_annex_decision_type_uid,
+            annex_decision.categorized_elements[annex_decision_uid]['category_uid'])
+        self.assertEqual(
+            original_annex_decision_type.get_category_group().getId(), 'item_decision_annexes')
+
+        # set the 2 annexes types as after_scan_change_annex_type_to of each other
+        original_annex_type.after_scan_change_annex_type_to = original_annex_decision_type_uid
+        original_annex_decision_type.after_scan_change_annex_type_to = original_annex_type_uid
+
+        # when updated, annex_type is changed
+        # annex
+        annex_updater.create_or_update()
+        new_annex_type = get_category_object(annex, annex.content_category)
+        self.assertEqual(new_annex_type.UID(), original_annex_decision_type_uid)
+        # everything is correctly updated, including index and categorized_elements dict
+        # portal_type
+        self.assertEqual(annex.portal_type, 'annexDecision')
+        # index updated
+        self.assertTrue(api.content.find(
+            content_category_uid=original_annex_decision_type_uid,
+            portal_type='annexDecision'))
+        # categorized_elements
+        self.assertEqual(
+            original_annex_decision_type_uid,
+            annex.categorized_elements[annex_uid]['category_uid'])
+
+        # annex_decision
+        annex_decision_updater.create_or_update()
+        new_annex_decision_type = get_category_object(annex_decision, annex_decision.content_category)
+        self.assertEqual(new_annex_decision_type.UID(), original_annex_type_uid)
+        # everything is correctly updated, including index and categorized_elements dict
+        # portal_type
+        self.assertEqual(annex_decision.portal_type, 'annex')
+        # index updated
+        self.assertTrue(api.content.find(
+            content_category_uid=original_annex_type_uid, portal_type='annex'))
+        # categorized_elements
+        self.assertEqual(
+            original_annex_type_uid,
+            annex_decision.categorized_elements[annex_decision_uid]['category_uid'])

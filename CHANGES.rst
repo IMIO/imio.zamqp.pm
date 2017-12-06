@@ -4,8 +4,11 @@ Changelog
 0.3 (unreleased)
 ----------------
 
-- Nothing changed yet.
-
+- In field `after_scan_change_annex_type_to`, added possibility to select an
+  item_decision_annex on an item_annex and the other way round. This way the
+  annex can be turned from an item annex to an item decision annex
+  after scan process.
+  [gbastien]
 
 0.2 (2017-11-28)
 ----------------

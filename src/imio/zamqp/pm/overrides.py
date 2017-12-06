@@ -42,27 +42,43 @@ class AfterScanChangeAnnexTypeToVocabulary(object):
             category_group = context
         else:
             category_group = context.get_category_group()
-        categories = category_group.objectValues()
-        for category in categories:
-            category_uid = category.UID()
-            category_title = category.Title()
-            terms.append(SimpleVocabulary.createTerm(
-                category_uid,
-                category_uid,
-                category_title,
-            ))
-            subcategories = api.content.find(
-                context=category,
-                object_provides='collective.iconifiedcategory.content.subcategory.ISubcategory',
-                enabled=True,
-            )
-            for subcategory in subcategories:
-                subcategory_uid = subcategory.UID
+        category_groups = [category_group]
+        # for annexes added to item, it can be turned to an item_annex or
+        # an item_decision_annex and the other way round
+        if category_group.getId() == 'item_annexes':
+            category_groups.append(category_group.aq_parent.get('item_decision_annexes'))
+        elif category_group.getId() == 'item_decision_annexes':
+            category_groups.append(category_group.aq_parent.get('item_annexes'))
+
+        for cat_group in category_groups:
+            category_group_title = cat_group.Title()
+            categories = cat_group.objectValues()
+
+            for category in categories:
+                category_uid = category.UID()
+                # display content_category_group title in the term title
+                category_title = u'{0} → {1}'.format(
+                    safe_unicode(category_group_title),
+                    safe_unicode(category.Title()))
                 terms.append(SimpleVocabulary.createTerm(
-                    '{0}_{1}'.format(category_uid, subcategory_uid),
-                    '{0}_{1}'.format(category_uid, subcategory_uid),
-                    u'{0} → {1}'.format(safe_unicode(category_title), safe_unicode(subcategory.Title)),
+                    category_uid,
+                    category_uid,
+                    category_title,
                 ))
+                subcategories = api.content.find(
+                    context=category,
+                    object_provides='collective.iconifiedcategory.content.subcategory.ISubcategory',
+                    enabled=True,
+                )
+                for subcategory in subcategories:
+                    subcategory_uid = subcategory.UID
+                    terms.append(SimpleVocabulary.createTerm(
+                        '{0}_{1}'.format(category_uid, subcategory_uid),
+                        '{0}_{1}'.format(category_uid, subcategory_uid),
+                        u'{0} → {1}'.format(
+                            safe_unicode(category_title),
+                            safe_unicode(subcategory.Title)),
+                    ))
         return SimpleVocabulary(terms)
 
 

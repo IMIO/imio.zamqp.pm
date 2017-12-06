@@ -39,18 +39,29 @@ class IconifiedAnnex(DMSMainFile):
         return ['annex', 'annexDecision']
 
     def _manage_after_scan_change_annex_type_to(self, the_file):
-        """ """
-        annex_type = get_category_object(the_file, the_file.content_category)
-        after_scan_change_annex_type_to = annex_type.after_scan_change_annex_type_to
+        """Change annex annex_type if defined in annex_type.after_scan_change_annex_type_to."""
+        old_annex_type = get_category_object(the_file, the_file.content_category)
+        after_scan_change_annex_type_to = old_annex_type.after_scan_change_annex_type_to
         # can not query on 'None'
         if not after_scan_change_annex_type_to:
             return
 
-        brains = api.content.find(UID=annex_type.after_scan_change_annex_type_to)
+        brains = api.content.find(UID=old_annex_type.after_scan_change_annex_type_to)
         if not brains:
             return
         to_annex_type = brains[0].getObject()
         the_file.content_category = calculate_category_id(to_annex_type)
+
+        # for items, the annex_type can move from item_annex type to item_decision_annex type
+        # and the other way round, in this case, the annex portal_type changed
+        if the_file.aq_parent.portal_type.startswith('MeetingItem'):
+            old_annex_type_group = old_annex_type.get_category_group()
+            to_annex_type_group = to_annex_type.get_category_group()
+            if old_annex_type_group != to_annex_type_group:
+                new_portal_type = 'annex'
+                if to_annex_type_group.getId() == 'item_decision_annexes':
+                    new_portal_type = 'annexDecision'
+                the_file.portal_type = new_portal_type
 
     def update(self, the_file, obj_file):
         """ """
