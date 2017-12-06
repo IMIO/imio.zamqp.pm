@@ -34,12 +34,12 @@ class IImioZamqpPMSettings(Interface):
 
     insert_barcode_x_value = schema.Int(
         title=_(u'Value of x when inserting barcode into a PDF file.'),
-        default=50,
+        default=185,
     )
 
     insert_barcode_y_value = schema.Int(
         title=_(u'Value of y when inserting barcode into a PDF file.'),
-        default=50,
+        default=15,
     )
 
     insert_barcode_scale_value = schema.Int(

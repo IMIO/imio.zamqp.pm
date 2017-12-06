@@ -9,6 +9,9 @@ Changelog
   annex can be turned from an item annex to an item decision annex
   after scan process.
   [gbastien]
+- Changed default values for `X` and `Y` coordinates used by the
+  `@@insert-barcode` view so it is inserted in the top right corner by default.
+  [gbastien]
 
 0.2 (2017-11-28)
 ----------------
