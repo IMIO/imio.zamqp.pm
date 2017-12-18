@@ -7,7 +7,7 @@
 # GNU General Public License (GPL)
 #
 
-from pyPdf.utils import PdfReadError
+from PyPDF2.utils import PdfReadError
 
 from zope.i18n import translate
 

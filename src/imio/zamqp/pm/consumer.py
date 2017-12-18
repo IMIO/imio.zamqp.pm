@@ -7,7 +7,7 @@ from collective.iconifiedcategory.utils import get_category_object
 from collective.iconifiedcategory.utils import calculate_category_id
 from collective.zamqp.consumer import Consumer
 from imio.zamqp.core import base
-from imio.zamqp.core.consumer import commit
+from imio.zamqp.core.consumer import consume
 from imio.zamqp.core.consumer import DMSMainFile
 from imio.zamqp.pm import interfaces
 from plone import api
@@ -26,10 +26,7 @@ IconifiedAnnexConsumerUtility = IconifiedAnnexConsumer()
 
 
 def consumeIconifiedAnnex(message, event):
-    doc = IconifiedAnnex('', '', message)
-    doc.create_or_update()
-    commit()
-    message.ack()
+    consume(IconifiedAnnex, '', '', message)
 
 
 class IconifiedAnnex(DMSMainFile):

@@ -4,8 +4,12 @@ Changelog
 0.4 (unreleased)
 ----------------
 
-- Nothing changed yet.
-
+- Use the `consume` method from `imio.zamqp.core` to consume the message to
+  avoid duplicating code.
+  [gbastien]
+- Import `PdfReadError` from `PyPDF2`, `imio.helpers` uses it instead
+  deprecated `pyPdf`.
+  [gbastien]
 
 0.3 (2017-12-06)
 ----------------
