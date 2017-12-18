@@ -17,6 +17,12 @@ from Products.CMFPlone.utils import base_hasattr
 import imio.zamqp.pm
 
 
+# monkey patched version of consumer.IconifiedAnnex.file_content
+@property
+def patched_file_content(self):
+    return 'New file content'
+
+
 class ImioZamqpPMLayer(PloneWithPackageLayer):
 
     def setUpZope(self, app, configurationContext):

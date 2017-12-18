@@ -1,9 +1,11 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:monkey="http://namespaces.plone.org/monkey"
     i18n_domain="imio.zamqp.pm">
 
   <include file="configure.zcml" />
+  <include package="collective.monkeypatcher" />
   <includeOverrides file="overrides.zcml" />
   <includeDependencies package="." />
 
@@ -13,6 +15,13 @@
       directory="profiles/testing"
       description="Steps to ease tests of imio.zamqp.pm"
       provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <monkey:patch
+      description="Patch the consumer file_content method to return an arbitrary string"
+      class="imio.zamqp.pm.consumer.IconifiedAnnex"
+      original="file_content"
+      replacement=".testing.patched_file_content"
       />
 
 </configure>

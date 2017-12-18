@@ -2,6 +2,7 @@
 
 from collective.iconifiedcategory.utils import get_category_object
 from collective.zamqp.message import Message
+from imio.zamqp.pm.consumer import IconifiedAnnex
 from imio.zamqp.pm.tests.base import BaseTestCase
 from imio.zamqp.pm.utils import next_scan_id_pm
 from plone import api
@@ -15,18 +16,8 @@ class TestConsumer(BaseTestCase):
 
     def _get_consumer_object(self, scan_id=None):
         """ """
-        from imio.zamqp.pm.consumer import IconifiedAnnex
-
-        class TestingIconifiedAnnexConsumer(IconifiedAnnex):
-            """Mock the consumer as the file_content method is doing an HTTP request
-               to get the file and we do not want that..."""
-
-            @property
-            def file_content(self):
-                return 'New file content'
-
         msg = Message(body=DEFAULT_BODY_PATTERN.format(scan_id or '013999900000001'))
-        annex_updater = TestingIconifiedAnnexConsumer(folder='', document_type='', message=msg)
+        annex_updater = IconifiedAnnex(folder='', document_type='', message=msg)
         return annex_updater
 
     def test_consumer_can_not_create(self):
