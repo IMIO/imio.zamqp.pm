@@ -20,6 +20,7 @@ import imio.zamqp.pm
 # monkey patched version of consumer.IconifiedAnnex.file_content
 @property
 def patched_file_content(self):
+    """ """
     return 'New file content'
 
 

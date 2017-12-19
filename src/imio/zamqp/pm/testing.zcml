@@ -22,6 +22,7 @@
       class="imio.zamqp.pm.consumer.IconifiedAnnex"
       original="file_content"
       replacement=".testing.patched_file_content"
+      docstringWarning="False"
       />
 
 </configure>
