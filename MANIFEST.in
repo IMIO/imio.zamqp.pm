@@ -1,8 +1,10 @@
+include .coveragerc
 include *.cfg
 include *.py
 include *.rst
 include .travis.yml
 include Makefile
+recursive-include buildout.d *.cfg
 recursive-include src *.pdf
 recursive-include src *.png
 recursive-include src *.sh
