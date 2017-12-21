@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.4 (unreleased)
+0.4 (2017-12-21)
 ----------------
 
 - Use the `consume` method from `imio.zamqp.core` to consume the message to
