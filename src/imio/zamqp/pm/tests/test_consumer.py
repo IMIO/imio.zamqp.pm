@@ -2,9 +2,11 @@
 
 from collective.iconifiedcategory.utils import get_category_object
 from collective.zamqp.message import Message
+from collective.zamqp.message import MessageArrivedEvent
 from imio.zamqp.pm.tests.base import BaseTestCase
 from imio.zamqp.pm.utils import next_scan_id_pm
 from plone import api
+from zope.event import notify
 
 DEFAULT_SCAN_ID = '013999900000001'
 
@@ -118,15 +120,20 @@ class TestConsumer(BaseTestCase):
             another_annex_type_uid,
             annex.categorized_elements[annex_uid]['category_uid'])
 
-    def test_consumer_manage_after_scan_change_to_other_category_group(self):
-        """When annex_type is changed, if it is an item annex, it can be changed from
-           item_annex to item_decision_annex and the other way round."""
+    def _item_with_annex_with_scan_id(self):
+        """Helper method that creates an item containing an annex with scan_id."""
         self.changeUser('pmCreator1')
         item = self.create('MeetingItem')
         annex = self.addAnnex(item)
-        annex_uid = annex.UID()
         annex.scan_id = next_scan_id_pm()
         annex.reindexObject(idxs=['scan_id'])
+        return item, annex
+
+    def test_consumer_manage_after_scan_change_to_other_category_group(self):
+        """When annex_type is changed, if it is an item annex, it can be changed from
+           item_annex to item_decision_annex and the other way round."""
+        item, annex = self._item_with_annex_with_scan_id()
+        annex_uid = annex.UID()
         annex_decision = self.addAnnex(item, relatedTo='item_decision')
         annex_decision_uid = annex_decision.UID()
         annex_decision.scan_id = next_scan_id_pm()
@@ -190,3 +197,9 @@ class TestConsumer(BaseTestCase):
         self.assertEqual(
             original_annex_type_uid,
             annex_decision.categorized_elements[annex_decision_uid]['category_uid'])
+
+    def test_consumer_message_arrived_event(self):
+        """Consumer is called on IMessageArrivedEvent."""
+        item, annex = self._item_with_annex_with_scan_id()
+        msg = Message(body=DEFAULT_BODY_PATTERN.format('013999900000001'))
+        notify(MessageArrivedEvent(msg))
