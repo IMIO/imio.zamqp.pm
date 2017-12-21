@@ -3,10 +3,13 @@
 from collective.iconifiedcategory.utils import get_category_object
 from collective.zamqp.message import Message
 from collective.zamqp.message import MessageArrivedEvent
+from imio.zamqp.pm.interfaces import IIconifiedAnnex
+from imio.zamqp.pm.testing import NEW_FILE_CONTENT
 from imio.zamqp.pm.tests.base import BaseTestCase
 from imio.zamqp.pm.utils import next_scan_id_pm
 from plone import api
 from zope.event import notify
+from zope.interface import alsoProvides
 
 DEFAULT_SCAN_ID = '013999900000001'
 
@@ -201,5 +204,9 @@ class TestConsumer(BaseTestCase):
     def test_consumer_message_arrived_event(self):
         """Consumer is called on IMessageArrivedEvent."""
         item, annex = self._item_with_annex_with_scan_id()
+        self.assertEqual(annex.file.data, 'Testing file\n')
         msg = Message(body=DEFAULT_BODY_PATTERN.format('013999900000001'))
+        alsoProvides(msg, IIconifiedAnnex)
+        msg.acknowledged = True
         notify(MessageArrivedEvent(msg))
+        self.assertEqual(annex.file.data, NEW_FILE_CONTENT)
