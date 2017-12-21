@@ -30,6 +30,7 @@ def consumeIconifiedAnnex(message, event):
 
 
 class IconifiedAnnex(DMSMainFile):
+    """ """
 
     @property
     def file_portal_type(self):
