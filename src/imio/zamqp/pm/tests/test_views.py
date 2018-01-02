@@ -6,8 +6,9 @@ from Products.PloneMeeting.config import BARCODE_INSERTED_ATTR_ID
 from Products.PloneMeeting.utils import cleanMemoize
 from Products.statusmessages.interfaces import IStatusMessage
 from imio.prettylink.interfaces import IPrettyLink
-from imio.zamqp.pm.utils import next_scan_id_pm
+from imio.zamqp.pm.interfaces import IImioZamqpPMSettings
 from imio.zamqp.pm.tests.base import BaseTestCase
+from imio.zamqp.pm.utils import next_scan_id_pm
 from zope.i18n import translate
 
 DEFAULT_SCAN_ID = '013999900000001'
@@ -136,3 +137,34 @@ class TestInsertBarcodeView(BaseTestCase):
         # insert barcode and check
         view()
         self.assertTrue('barcode.png' in IPrettyLink(annex).getLink())
+
+    def test_annex_version_when_barcode_inserted(self):
+        """If parameter version_when_barcode_inserted is True, the annex
+           is versionned when the barcode is inserted so it is possible to fall back to original file."""
+        self.changeUser('pmCreator1')
+        item = self.create('MeetingItem')
+        # use a PDF file
+        self.annexFile = u'file_correct.pdf'
+
+        # no versioning
+        annex = self.addAnnex(item)
+        view = annex.restrictedTraverse('@@insert-barcode')
+        pr = api.portal.get_tool('portal_repository')
+        self.assertFalse(api.portal.get_registry_record(
+                'version_when_barcode_inserted',
+                interface=IImioZamqpPMSettings))
+        view()
+        self.assertFalse(pr.getHistoryMetadata(annex))
+
+        # versioning
+        api.portal.set_registry_record(
+            'version_when_barcode_inserted', True, interface=IImioZamqpPMSettings)
+        annex2 = self.addAnnex(item)
+        view = annex2.restrictedTraverse('@@insert-barcode')
+        view()
+        self.assertTrue(pr.getHistoryMetadata(annex2))
+        # version 0 is available
+        self.assertEqual(pr.getHistoryMetadata(annex2)._available, [0])
+        # files are different as original file was saved with version
+        old_obj = pr.retrieve(annex2, 0).object
+        self.assertNotEqual(old_obj.file.size, annex2.file.size)

@@ -74,6 +74,7 @@ class InsertBarcodeView(BrowserView):
         scan_id = self.context.scan_id
         if not scan_id:
             scan_id = next_scan_id_pm()
+
         # generate barcode value
         scan_id_barcode = 'IMIO{0}'.format(scan_id)
         barcode_stamp = BarcodeStamp(filepath, barcode_value=scan_id_barcode, x=x, y=y, scale=scale)
@@ -87,6 +88,18 @@ class InsertBarcodeView(BrowserView):
                             "the PDF file, please check the file!")
             plone_utils.addPortalMessage(msg, type='error')
             return self.request.RESPONSE.redirect(self.request['HTTP_REFERER'])
+
+        # versionate file before barcode is inserted if relevant
+        if api.portal.get_registry_record(
+                'version_when_barcode_inserted', interface=IImioZamqpPMSettings):
+            pr = api.portal.get_tool('portal_repository')
+            # make sure annex modification date is not changed at this point
+            obj_modified = self.context.modified()
+            pr.save(obj=self.context, comment='Versioned before barcode is inserted into the file.')
+            # set back modified on advice so version timestamp is > advice modified
+            self.context.setModificationDate(obj_modified)
+
+        # insert barcode
         patched_file.seek(0)
         data = patched_file.read()
         patched_file.close()
@@ -103,6 +116,7 @@ class InsertBarcodeView(BrowserView):
                         domain='imio.zamqp.pm',
                         context=self.request,
                         default="Barcode inserted successfully!")
+
         # notify modified and return
         self.context.notifyModified()
         self.context.reindexObject()

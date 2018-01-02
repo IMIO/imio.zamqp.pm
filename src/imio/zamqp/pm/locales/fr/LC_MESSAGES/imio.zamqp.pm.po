@@ -14,6 +14,14 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: DOMAIN\n"
 
+#. Default: "Save a version of the annex when inserting the barcode."
+msgid "Save a version of the annex when inserting the barcode."
+msgstr "Sauvegarder une version de l'annexe lors de l'insertion du code-barres."
+
+#. Default: "Save a version of the annex when reinjecting the scanned file."
+msgid "Save a version of the annex when reinjecting the scanned file."
+msgstr "Sauvegarder une version de l'annexe lors de la réinjection du fichier scanné."
+
 #. Default: "Value of scale when inserting barcode into a PDF file."
 msgid "Value of scale when inserting barcode into a PDF file."
 msgstr "Valeur du paramètre 'scale' lors de l'insertion du code-barres dans un fichier PDF."

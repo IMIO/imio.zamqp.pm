@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 from zope.event import notify
-from zope.lifecycleevent import ObjectModifiedEvent
+from imio.annex.events import AnnexFileChangedEvent
 
 from collective.iconifiedcategory.utils import get_category_object
 from collective.iconifiedcategory.utils import calculate_category_id
@@ -69,7 +69,7 @@ class IconifiedAnnex(DMSMainFile):
         # an updated annex is de facto considered as a signed version
         the_file.to_sign = True
         the_file.signed = True
-        notify(ObjectModifiedEvent(the_file))
+        notify(AnnexFileChangedEvent(the_file, obj_file, called_by='consumer'))
         logger.info("File at \"{0}\" with scan_id \"{1}\" was updated!".format(
             "/".join(the_file.getPhysicalPath()),
             self.scan_fields['scan_id']))

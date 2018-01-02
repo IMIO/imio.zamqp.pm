@@ -4,8 +4,11 @@ Changelog
 0.5 (unreleased)
 ----------------
 
-- Nothing changed yet.
-
+- Added possibility to save a version of the annex when inserting the barcode
+  if parameter `version_when_barcode_inserted` is set to `True` and when the
+  scanned file is reinjected if parameter `version_when_scanned_file_reinjected`
+  is set to `True` likewise.
+  [gbastien]
 
 0.4 (2017-12-21)
 ----------------

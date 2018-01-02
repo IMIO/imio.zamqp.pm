@@ -46,3 +46,13 @@ class IImioZamqpPMSettings(Interface):
         title=_(u'Value of scale when inserting barcode into a PDF file.'),
         default=4,
     )
+
+    version_when_barcode_inserted = schema.Bool(
+        title=_(u'Save a version of the annex when inserting the barcode.'),
+        default=False,
+    )
+
+    version_when_scanned_file_reinjected = schema.Bool(
+        title=_(u'Save a version of the annex when reinjecting the scanned file.'),
+        default=False,
+    )
