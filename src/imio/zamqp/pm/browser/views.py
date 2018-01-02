@@ -21,6 +21,7 @@ from plone.rfc822.interfaces import IPrimaryFieldInfo
 from imio.helpers.pdf import BarcodeStamp
 from imio.zamqp.pm.utils import next_scan_id_pm
 from Products.PloneMeeting.config import BARCODE_INSERTED_ATTR_ID
+from Products.PloneMeeting.utils import version_object
 from imio.zamqp.pm.interfaces import IImioZamqpPMSettings
 
 
@@ -92,12 +93,9 @@ class InsertBarcodeView(BrowserView):
         # versionate file before barcode is inserted if relevant
         if api.portal.get_registry_record(
                 'version_when_barcode_inserted', interface=IImioZamqpPMSettings):
-            pr = api.portal.get_tool('portal_repository')
-            # make sure annex modification date is not changed at this point
-            obj_modified = self.context.modified()
-            pr.save(obj=self.context, comment='Versioned before barcode is inserted into the file.')
-            # set back modified on advice so version timestamp is > advice modified
-            self.context.setModificationDate(obj_modified)
+            version_object(
+                self.context,
+                comment='Versioned before barcode is inserted into the file.')
 
         # insert barcode
         patched_file.seek(0)
