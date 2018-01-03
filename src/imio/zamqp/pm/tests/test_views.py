@@ -5,10 +5,12 @@ from Products.CMFCore.permissions import ModifyPortalContent
 from Products.PloneMeeting.config import BARCODE_INSERTED_ATTR_ID
 from Products.PloneMeeting.utils import cleanMemoize
 from Products.statusmessages.interfaces import IStatusMessage
+from zope.lifecycleevent import ObjectModifiedEvent
 from imio.prettylink.interfaces import IPrettyLink
 from imio.zamqp.pm.interfaces import IImioZamqpPMSettings
 from imio.zamqp.pm.tests.base import BaseTestCase
 from imio.zamqp.pm.utils import next_scan_id_pm
+from zope.event import notify
 from zope.i18n import translate
 
 DEFAULT_SCAN_ID = '013999900000001'
@@ -137,6 +139,10 @@ class TestInsertBarcodeView(BaseTestCase):
         # insert barcode and check
         view()
         self.assertTrue('barcode.png' in IPrettyLink(annex).getLink())
+
+        # if file is updated, the barcode icon is removed
+        notify(ObjectModifiedEvent(annex))
+        self.assertFalse('barcode.png' in IPrettyLink(annex).getLink())
 
     def test_annex_version_when_barcode_inserted(self):
         """If parameter version_when_barcode_inserted is True, the annex
