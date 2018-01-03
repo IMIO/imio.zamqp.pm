@@ -4,6 +4,7 @@ from collective.iconifiedcategory.utils import get_category_object
 from collective.zamqp.message import Message
 from collective.zamqp.message import MessageArrivedEvent
 from imio.zamqp.pm.interfaces import IIconifiedAnnex
+from imio.zamqp.pm.interfaces import IImioZamqpPMSettings
 from imio.zamqp.pm.testing import NEW_FILE_CONTENT
 from imio.zamqp.pm.tests.base import BaseTestCase
 from imio.zamqp.pm.utils import next_scan_id_pm
@@ -64,6 +65,28 @@ class TestConsumer(BaseTestCase):
         # annex2 was not updated
         self.assertEqual(annex2.modified(), annex2_modified)
         self.assertEqual(annex2.file.getSize(), annex2_file_size)
+
+    def test_consumer_update_annex_with_inserted_barcode(self):
+        """Create an item with a PDF annex, insert the barcode then update it.
+           This also test that multiple versions are not applied, it fails in
+           versioning when scanned file is versioned because of a transaction savepoint failure."""
+        pr = api.portal.get_tool('portal_repository')
+        api.portal.set_registry_record('version_when_barcode_inserted', True, interface=IImioZamqpPMSettings)
+        api.portal.set_registry_record('version_when_scanned_file_reinjected', True, interface=IImioZamqpPMSettings)
+        annex_updater = self._get_consumer_object()
+        self.changeUser('pmCreator1')
+        item = self.create('MeetingItem')
+        # use a PDF file
+        self.annexFile = u'file_correct.pdf'
+        annex = self.addAnnex(item)
+        view = annex.restrictedTraverse('@@insert-barcode')
+        view()
+        self.assertEqual(pr.getHistoryMetadata(annex)._available, [0])
+        annex_updater.create_or_update()
+        # was not versioned again
+        self.assertEqual(pr.getHistoryMetadata(annex)._available, [0])
+        # but correctly updated
+        self.assertEqual(annex.file.data, NEW_FILE_CONTENT)
 
     def test_consumer_manage_after_scan_change_annex_type_to(self):
         """When an annex is updated by the consumer, it is possible to change
@@ -127,6 +150,7 @@ class TestConsumer(BaseTestCase):
         """Helper method that creates an item containing an annex with scan_id."""
         self.changeUser('pmCreator1')
         item = self.create('MeetingItem')
+        self.annexFile = u'file_correct.pdf'
         annex = self.addAnnex(item)
         annex.scan_id = next_scan_id_pm()
         annex.reindexObject(idxs=['scan_id'])
@@ -204,7 +228,7 @@ class TestConsumer(BaseTestCase):
     def test_consumer_message_arrived_event(self):
         """Consumer is called on IMessageArrivedEvent."""
         item, annex = self._item_with_annex_with_scan_id()
-        self.assertEqual(annex.file.data, 'Testing file\n')
+        self.assertTrue("/DocChecksum /E1B86A6F99866F3DF1A888178C4F6F94" in annex.file.data)
         msg = Message(body=DEFAULT_BODY_PATTERN.format('013999900000001'))
         alsoProvides(msg, IIconifiedAnnex)
         msg.acknowledged = True

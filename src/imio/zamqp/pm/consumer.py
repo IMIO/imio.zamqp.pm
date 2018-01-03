@@ -10,6 +10,8 @@ from imio.zamqp.core import base
 from imio.zamqp.core.consumer import consume
 from imio.zamqp.core.consumer import DMSMainFile
 from imio.zamqp.pm import interfaces
+from Products.PloneMeeting.utils import version_object
+
 from plone import api
 
 import logging
@@ -63,6 +65,15 @@ class IconifiedAnnex(DMSMainFile):
 
     def update(self, the_file, obj_file):
         """ """
+        # versionate annex before the scanned file is reinjected
+        if api.portal.get_registry_record(
+                'version_when_scanned_file_reinjected',
+                interface=interfaces.IImioZamqpPMSettings):
+            version_object(
+                the_file,
+                only_once=True,
+                comment='Versioned before scanned file was reinjected.')
+
         setattr(the_file, 'file', obj_file)
         # right, get the_file content_category object and check after_scan_change_annex_type_to
         self._manage_after_scan_change_annex_type_to(the_file)
