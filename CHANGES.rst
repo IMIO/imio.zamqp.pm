@@ -9,6 +9,8 @@ Changelog
   scanned file is reinjected if parameter `version_when_scanned_file_reinjected`
   is set to `True` likewise.
   [gbastien]
+- Define relevant behaviors for portal_type `annexDecision` using `purge=True`.
+  [gbastien]
 
 0.4 (2017-12-21)
 ----------------
