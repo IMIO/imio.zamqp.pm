@@ -35,7 +35,7 @@ class IconifiedAnnex(DMSMainFile):
     """ """
 
     @property
-    def file_portal_type(self):
+    def file_portal_types(self):
         return ['annex', 'annexDecision']
 
     def _manage_after_scan_change_annex_type_to(self, the_file):

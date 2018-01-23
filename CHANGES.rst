@@ -11,6 +11,12 @@ Changelog
   [gbastien]
 - Define relevant behaviors for portal_type `annexDecision` using `purge=True`.
   [gbastien]
+- Fixed code as `imio.zamqp.core.consumer.file_portal_type` was renamed to
+  `imio.zamqp.core.consumer.file_portal_types`, it returns a list of
+  portal_types to query to get the existing file, the first of these
+  portal_types is used by `imio.zamqp.core.consumer.creation_file_portal_type`
+  to determinate portal_type to create.
+  [gbastien]
 
 0.4 (2017-12-21)
 ----------------
