@@ -80,6 +80,8 @@ class IconifiedAnnex(DMSMainFile):
         # an updated annex is de facto considered as a signed version
         the_file.to_sign = True
         the_file.signed = True
+        # update scan attributes like 'pages_number', 'scan_date', ...
+        self.set_scan_attr(the_file)
         notify(ObjectModifiedEvent(the_file))
         logger.info("File at \"{0}\" with scan_id \"{1}\" was updated!".format(
             "/".join(the_file.getPhysicalPath()),

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from datetime import datetime
 from collective.iconifiedcategory.utils import get_category_object
 from collective.zamqp.message import Message
 from collective.zamqp.message import MessageArrivedEvent
@@ -58,10 +59,20 @@ class TestConsumer(BaseTestCase):
         annex2.scan_id = next_scan_id_pm()
         annex2.reindexObject(idxs=['scan_id'])
         self.assertNotEqual(annex2.scan_id, DEFAULT_SCAN_ID)
-        # correct annex file was updated
+
+        # correct annex file was updated, including scan attributes
+        self.assertIsNone(annex1.scan_date)
+        self.assertIsNone(annex1.pages_number)
+        self.assertIsNone(annex1.scan_user)
+        self.assertIsNone(annex1.scanner)
         annex_updater.create_or_update()
         self.assertNotEqual(annex1.modified(), annex1_modified)
         self.assertNotEqual(annex1.file.getSize(), annex1_file_size)
+        self.assertEqual(annex1.scan_date, datetime(2014, 11, 20, 15, 0))
+        self.assertEqual(annex1.pages_number, 1)
+        self.assertEqual(annex1.scan_user, u'testuser')
+        self.assertEqual(annex1.scanner, u'pc-scan01')
+
         # annex2 was not updated
         self.assertEqual(annex2.modified(), annex2_modified)
         self.assertEqual(annex2.file.getSize(), annex2_file_size)

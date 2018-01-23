@@ -17,6 +17,9 @@ Changelog
   portal_types is used by `imio.zamqp.core.consumer.creation_file_portal_type`
   to determinate portal_type to create.
   [gbastien]
+- When updating file, update scan attributes as well : `scan_date`, `scan_user`,
+  `page_numbers`, `scanner`, ...
+  [gbastien]
 
 0.4 (2017-12-21)
 ----------------
