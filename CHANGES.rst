@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.5 (unreleased)
+0.5 (2018-01-31)
 ----------------
 
 - Added possibility to save a version of the annex when inserting the barcode
