@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.6 (unreleased)
+0.6 (2018-12-04)
 ----------------
 
 - Fixed tests by using PMLayer as base testing layer and defining correct
