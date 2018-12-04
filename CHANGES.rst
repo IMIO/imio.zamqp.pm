@@ -4,8 +4,9 @@ Changelog
 0.6 (unreleased)
 ----------------
 
-- Nothing changed yet.
-
+- Fixed tests by using PMLayer as base testing layer and defining correct
+  OO_PORT and PYTHON_UNO env variables.
+  [gbastien]
 
 0.5 (2018-01-31)
 ----------------
