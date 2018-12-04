@@ -7,14 +7,15 @@
 # GNU General Public License (GPL)
 #
 
-from plone.testing import z2
-from plone.testing import zca
 from plone.app.testing import FunctionalTesting
 from plone.app.testing import IntegrationTesting
-from plone.app.testing import PloneWithPackageLayer
+from plone.testing import z2
+from plone.testing import zca
 from Products.CMFPlone.utils import base_hasattr
+from Products.PloneMeeting.testing import PMLayer
 
 import imio.zamqp.pm
+
 
 # monkey patched version of consumer.IconifiedAnnex.file_content
 NEW_FILE_CONTENT = 'New file content'
@@ -26,7 +27,7 @@ def patched_file_content(self):
     return NEW_FILE_CONTENT
 
 
-class ImioZamqpPMLayer(PloneWithPackageLayer):
+class ImioZamqpPMLayer(PMLayer):
 
     def setUpZope(self, app, configurationContext):
         from App.config import _config
