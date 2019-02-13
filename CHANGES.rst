@@ -4,8 +4,9 @@ Changelog
 0.7 (unreleased)
 ----------------
 
-- Nothing changed yet.
-
+- Makes IZPMAnnexPrettyLinkAdapter inherits from PMAnnexPrettyLinkAdapter as it
+  is now overrided in Products.PloneMeeting.
+  [gbastien]
 
 0.6 (2018-12-04)
 ----------------

@@ -8,15 +8,15 @@ from zope.schema.interfaces import IVocabularyFactory
 from collective.iconifiedcategory.content.category import CategorySchemaPolicy
 from collective.iconifiedcategory.content.categorygroup import ICategoryGroup
 from collective.iconifiedcategory.content.subcategory import SubcategorySchemaPolicy
-from imio.annex.adapters import AnnexPrettyLinkAdapter
 from imio.zamqp.pm.interfaces import ICategoryZamqp
 from imio.zamqp.pm.interfaces import ISubcategoryZamqp
 from plone import api
 from Products.CMFPlone.utils import safe_unicode
+from Products.PloneMeeting.adapters import PMAnnexPrettyLinkAdapter
 from Products.PloneMeeting.config import BARCODE_INSERTED_ATTR_ID
 
 
-class IZPMAnnexPrettyLinkAdapter(AnnexPrettyLinkAdapter):
+class IZPMAnnexPrettyLinkAdapter(PMAnnexPrettyLinkAdapter):
     """ """
 
     def _leadingIcons(self):
