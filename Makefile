@@ -5,8 +5,7 @@ all: run
 .PHONY: bootstrap
 bootstrap:
 	virtualenv-2.7 .
-	./bin/pip install setuptools==38.2.4
-	./bin/python bootstrap.py --version=2.10.0
+	./bin/pip install -r requirements.txt
 
 .PHONY: buildout
 buildout:
