@@ -8,6 +8,7 @@
 #
 
 from imio.zamqp.core import utils as zamqp_utils
+from plone import api
 from Products.PloneMeeting.browser.overrides import PMDocumentGenerationView
 
 
@@ -18,7 +19,9 @@ class AMQPPMDocumentGenerationView(PMDocumentGenerationView):
     def get_base_generation_context(self):
         """ """
         specific_context = super(AMQPPMDocumentGenerationView, self).get_base_generation_context()
-        helper_view = self.get_generation_context_helper()
-        specific_context['zamqp_utils'] = zamqp_utils
-        specific_context['scan_id'] = helper_view.get_scan_id()
+        tool = api.portal.get_tool('portal_plonemeeting')
+        if tool.getEnableScanDocs():
+            helper_view = self.get_generation_context_helper()
+            specific_context['zamqp_utils'] = zamqp_utils
+            specific_context['scan_id'] = helper_view.get_scan_id()
         return specific_context

@@ -7,6 +7,10 @@ Changelog
 - Makes IZPMAnnexPrettyLinkAdapter inherits from PMAnnexPrettyLinkAdapter as it
   is now overrided in Products.PloneMeeting.
   [gbastien]
+- Rely on parameter `ToolPloneMeeting.enabledScanDocs` to know if action
+  `insert-barcode` is available and to add additional context to the document
+  generation helper view.
+  [gbastien]
 
 0.6 (2018-12-04)
 ----------------

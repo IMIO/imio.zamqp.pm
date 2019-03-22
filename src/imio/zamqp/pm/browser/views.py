@@ -7,26 +7,26 @@
 # GNU General Public License (GPL)
 #
 
-from PyPDF2.utils import PdfReadError
-
-from zope.i18n import translate
-
-from Products.CMFCore.permissions import ModifyPortalContent
-from Products.Five import BrowserView
+from imio.helpers.pdf import BarcodeStamp
+from imio.zamqp.pm.interfaces import IImioZamqpPMSettings
+from imio.zamqp.pm.utils import next_scan_id_pm
 from plone import api
-
 from plone.namedfile.file import NamedBlobFile
 from plone.rfc822.interfaces import IPrimaryFieldInfo
-
-from imio.helpers.pdf import BarcodeStamp
-from imio.zamqp.pm.utils import next_scan_id_pm
+from Products.CMFCore.permissions import ModifyPortalContent
+from Products.Five import BrowserView
 from Products.PloneMeeting.config import BARCODE_INSERTED_ATTR_ID
 from Products.PloneMeeting.utils import version_object
-from imio.zamqp.pm.interfaces import IImioZamqpPMSettings
+from PyPDF2.utils import PdfReadError
+from zope.i18n import translate
 
 
 class InsertBarcodeView(BrowserView):
     """ """
+
+    def __init__(self, context, request):
+        super(InsertBarcodeView, self).__init__(context, request)
+        self.tool = api.portal.get_tool('portal_plonemeeting')
 
     def __call__(self, x=None, y=None, scale=None, force=False):
         """ """
@@ -124,15 +124,15 @@ class InsertBarcodeView(BrowserView):
     def may_insert_barcode(self):
         """By default, must be (Meeting)Manager to include barcode and
            barcode must not be already inserted."""
-        member = api.user.get_current()
-        # bypass for 'Manager'
-        if 'Manager' in member.getRoles():
-            return True
-
-        tool = api.portal.get_tool('portal_plonemeeting')
-        isManager = tool.isManager(self.context)
-
-        barcode_inserted = getattr(self.context, BARCODE_INSERTED_ATTR_ID, False)
-        if not isManager or barcode_inserted or not member.has_permission(ModifyPortalContent, self.context):
-            return False
-        return True
+        res = False
+        if self.tool.getEnableScanDocs():
+            member = api.user.get_current()
+            # bypass for 'Manager'
+            if 'Manager' in member.getRoles():
+                res = True
+            else:
+                isManager = self.tool.isManager(self.context)
+                barcode_inserted = getattr(self.context, BARCODE_INSERTED_ATTR_ID, False)
+                if isManager and not barcode_inserted and member.has_permission(ModifyPortalContent, self.context):
+                    res = True
+        return res
