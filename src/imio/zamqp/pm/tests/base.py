@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 
-import os
-
+from imio.zamqp.pm import testing
 from plone import api
 from plone import namedfile
 from plone.app.testing import login
-
-from imio.zamqp.pm import testing
 from Products.PloneMeeting.tests.PloneMeetingTestCase import PloneMeetingTestCase
+
+import os
 
 
 class BaseTestCase(PloneMeetingTestCase):
@@ -46,6 +45,9 @@ class BaseTestCase(PloneMeetingTestCase):
         wftool.setChainForPortalTypes(
             ('annex', 'annexDecision'),
             ('simple_publication_workflow',))
+
+        # enable docs scanning functionnality in PM
+        self.portal.portal_plonemeeting.setEnableScanDocs(True)
 
         api.user.create(
             email='test@test.com',

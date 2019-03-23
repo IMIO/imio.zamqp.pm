@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
 
+from imio.prettylink.interfaces import IPrettyLink
+from imio.zamqp.pm.interfaces import IImioZamqpPMSettings
+from imio.zamqp.pm.tests.base import BaseTestCase
+from imio.zamqp.pm.utils import next_scan_id_pm
 from plone import api
 from Products.CMFCore.permissions import ModifyPortalContent
 from Products.PloneMeeting.config import BARCODE_INSERTED_ATTR_ID
 from Products.PloneMeeting.utils import cleanMemoize
 from Products.statusmessages.interfaces import IStatusMessage
-from zope.lifecycleevent import ObjectModifiedEvent
-from imio.prettylink.interfaces import IPrettyLink
-from imio.zamqp.pm.interfaces import IImioZamqpPMSettings
-from imio.zamqp.pm.tests.base import BaseTestCase
-from imio.zamqp.pm.utils import next_scan_id_pm
 from zope.event import notify
 from zope.i18n import translate
+from zope.lifecycleevent import ObjectModifiedEvent
+
 
 DEFAULT_SCAN_ID = '013999900000001'
 
@@ -156,9 +157,9 @@ class TestInsertBarcodeView(BaseTestCase):
         annex = self.addAnnex(item)
         view = annex.restrictedTraverse('@@insert-barcode')
         pr = api.portal.get_tool('portal_repository')
-        self.assertFalse(api.portal.get_registry_record(
-                'version_when_barcode_inserted',
-                interface=IImioZamqpPMSettings))
+        self.assertFalse(
+            api.portal.get_registry_record('version_when_barcode_inserted',
+                                           interface=IImioZamqpPMSettings))
         view()
         self.assertFalse(pr.getHistoryMetadata(annex))
 
