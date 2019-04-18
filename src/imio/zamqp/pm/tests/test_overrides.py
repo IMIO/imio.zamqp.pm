@@ -12,8 +12,11 @@ class TestOverrides(BaseTestCase):
         item = self.create('MeetingItem')
         view = item.restrictedTraverse('@@document-generation')
         # zamqp_utils
-        self.assertTrue('zamqp_utils' in view.get_base_generation_context())
-        self.assertTrue('scan_id' in view.get_base_generation_context())
+        pod_template = self.meetingConfig.podtemplates.itemTemplate
+        helper_view = view.get_generation_context_helper()
+        generation_context = view.get_base_generation_context(helper_view, pod_template)
+        self.assertTrue('zamqp_utils' in generation_context)
+        self.assertTrue('scan_id' in generation_context)
         # in addition to values added by PloneMeeting
-        self.assertTrue('tool' in view.get_base_generation_context())
-        self.assertTrue('meetingConfig' in view.get_base_generation_context())
+        self.assertTrue('tool' in generation_context)
+        self.assertTrue('meetingConfig' in generation_context)

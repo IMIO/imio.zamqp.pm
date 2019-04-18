@@ -11,6 +11,8 @@ Changelog
   `insert-barcode` is available and to add additional context to the document
   generation helper view.
   [gbastien]
+- Make `scan_id` computation work when template is used in a loop template.
+  [gbastien]
 
 0.6 (2018-12-04)
 ----------------
