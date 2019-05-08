@@ -11,7 +11,7 @@ bootstrap:
 buildout:
 	rm -f .installed.cfg
 	if ! test -f bin/buildout;then make bootstrap;fi
-	bin/buildout
+	bin/python bin/buildout
 
 .PHONY: run
 run:
