@@ -37,10 +37,12 @@ class ImioZamqpPMLayer(PMLayer):
                                                           'client_id': '019999'}}
         super(ImioZamqpPMLayer, self).setUpZope(app, configurationContext)
 
+
 AMQP_PM_ZCML = zca.ZCMLSandbox(
     filename="testing.zcml",
     package=imio.zamqp.pm,
     name='PM_ZCML')
+
 
 AMQP_PM_Z2 = z2.IntegrationTesting(
     bases=(z2.STARTUP, AMQP_PM_ZCML),
@@ -61,6 +63,7 @@ AMQP_PM_TESTING_PROFILE = ImioZamqpPMLayer(
 AMQP_PM_TESTING_PROFILE_INTEGRATION = IntegrationTesting(
     bases=(AMQP_PM_TESTING_PROFILE,),
     name="AMQP_PM_TESTING_PROFILE_INTEGRATION")
+
 
 AMQP_PM_TESTING_PROFILE_FUNCTIONAL = FunctionalTesting(
     bases=(AMQP_PM_TESTING_PROFILE,),

@@ -24,6 +24,7 @@ class IconifiedAnnexConsumer(base.DMSConsumer, Consumer):
     marker = interfaces.IIconifiedAnnex
     queuename = 'dms.deliberation.{0}'
 
+
 IconifiedAnnexConsumerUtility = IconifiedAnnexConsumer()
 
 
