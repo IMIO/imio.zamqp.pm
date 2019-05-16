@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.7 (unreleased)
+0.7 (2019-05-16)
 ----------------
 
 - Makes IZPMAnnexPrettyLinkAdapter inherits from PMAnnexPrettyLinkAdapter as it
