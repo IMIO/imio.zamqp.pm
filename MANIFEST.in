@@ -2,6 +2,7 @@ include .coveragerc
 include *.cfg
 include *.py
 include *.rst
+include *.txt
 include .travis.yml
 include Makefile
 recursive-include buildout.d *.cfg
