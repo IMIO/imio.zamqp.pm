@@ -4,8 +4,8 @@ Changelog
 0.8 (unreleased)
 ----------------
 
-- Nothing changed yet.
-
+- When cloning an item, make sure annexes having a `scan_id` are not kept.
+  [gbastien]
 
 0.7 (2019-05-16)
 ----------------
