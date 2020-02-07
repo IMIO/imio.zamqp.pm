@@ -35,7 +35,7 @@ class TestOverrides(BaseTestCase):
         # by default, store_as_annex = '0'
         helper = view.get_generation_context_helper()
         self.request.set('store_as_annex', '0')
-        self.assertEqual(helper.get_scan_id(), '013999900000001\nTemporary QR code!')
+        self.assertEqual(helper.get_scan_id(), '013999900000001\n[Temporary QR code!]')
         self.request.set('store_as_annex', '1')
         self.assertEqual(helper.get_scan_id(), '013999900000001')
 
