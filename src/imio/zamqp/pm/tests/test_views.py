@@ -147,7 +147,8 @@ class TestInsertBarcodeView(BaseTestCase):
 
     def test_annex_version_when_barcode_inserted(self):
         """If parameter version_when_barcode_inserted is True, the annex
-           is versionned when the barcode is inserted so it is possible to fall back to original file."""
+           is versionned when the barcode is inserted so it is possible
+           to fall back to original file."""
         self.changeUser('pmCreator1')
         item = self.create('MeetingItem')
         # use a PDF file

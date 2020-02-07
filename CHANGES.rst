@@ -6,6 +6,9 @@ Changelog
 
 - When cloning an item, make sure annexes having a `scan_id` are not kept.
   [gbastien]
+- Added test for `get_scan_id` that appends a value `Temporary` if generated
+  when pod template still not stored as annex.
+  [gbastien]
 
 0.7 (2019-05-16)
 ----------------

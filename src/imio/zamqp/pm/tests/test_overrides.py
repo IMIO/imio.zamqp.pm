@@ -20,3 +20,29 @@ class TestOverrides(BaseTestCase):
         # in addition to values added by PloneMeeting
         self.assertTrue('tool' in generation_context)
         self.assertTrue('meetingConfig' in generation_context)
+
+    def test_store_pod_template_as_annex_temporary_scan_id(self):
+        """When a template is generated without having been stored
+           scan_id is subject to change, in this case, we append a specific
+           value saying Title of stored annex may be customized depending on
+           pod_template.store_as_annex_title_expr."""
+        pod_template, annex_type, item = self._setupStorePodAsAnnex()
+
+        self.changeUser('pmManager')
+        self.request.set('template_uid', pod_template.UID())
+        self.request.set('output_format', 'odt')
+        view = item.restrictedTraverse('@@document-generation')
+        # by default, store_as_annex = '0'
+        helper = view.get_generation_context_helper()
+        self.request.set('store_as_annex', '0')
+        self.assertEqual(helper.get_scan_id(), '013999900000001 [Tmp QR code!!!]')
+        self.request.set('store_as_annex', '1')
+        self.assertEqual(helper.get_scan_id(), '013999900000001')
+
+        # when stored as annex, generating the POD template will return correct QR code
+        view()
+        helper = view.get_generation_context_helper()
+        self.request.set('store_as_annex', '0')
+        self.assertEqual(helper.get_scan_id(), '013999900000001')
+        self.request.set('store_as_annex', '1')
+        self.assertEqual(helper.get_scan_id(), '013999900000001')
