@@ -19,7 +19,7 @@ class IAnnexTypeZamqp(Interface):
         description=_(u"after_scan_change_annex_type_to_descr"),
         vocabulary=u'imio.zamqp.pm.after_scan_change_annex_type_to_vocabulary',
         required=False,
-        )
+    )
 
 
 class ICategoryZamqp(ICategory, IAnnexTypeZamqp):
