@@ -9,6 +9,10 @@ Changelog
 - Added test for `get_scan_id` that appends a value `Temporary` if generated
   when pod template still not stored as annex.
   [gbastien]
+- Fixed tests after changes in `collective.iconifiedcategory`, do not create an
+  annex at the portal root, it is an impossible usecase but create annex in an
+  item stored in a PloneMeeting folder.
+  [gbastien]
 
 0.7 (2019-05-16)
 ----------------

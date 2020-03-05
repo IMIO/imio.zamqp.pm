@@ -21,7 +21,14 @@ class TestInsertBarcodeView(BaseTestCase):
 
     def setUp(self):
         super(TestInsertBarcodeView, self).setUp()
-        self.view = self.portal.file_pdf.restrictedTraverse('@@insert-barcode')
+        self.changeUser('pmManager')
+        self.item = self.create('MeetingItem')
+        annex_txt = self.addAnnex(self.item)
+        annex_pdf = self.addAnnex(self.item, annexFile=self.annexFilePDF)
+        self.view = annex_pdf.restrictedTraverse('@@insert-barcode')
+        self.view_txt = annex_txt.restrictedTraverse('@@insert-barcode')
+        # wipeout portal messages
+        IStatusMessage(self.request).show()
 
     def _check_barcode_inserted_correctly(self):
         """ """
@@ -44,12 +51,11 @@ class TestInsertBarcodeView(BaseTestCase):
 
     def test_file_must_be_pdf(self):
         """ """
-        view_txt = self.portal.file_txt.restrictedTraverse('@@insert-barcode')
         # nothing done and a message is added
         self.assertEqual(IStatusMessage(self.request).show(), [])
-        view_txt()
-        self.assertIsNone(view_txt.context.scan_id)
-        barcode_inserted = getattr(view_txt.context,
+        self.view_txt()
+        self.assertIsNone(self.view_txt.context.scan_id)
+        barcode_inserted = getattr(self.view_txt.context,
                                    BARCODE_INSERTED_ATTR_ID,
                                    False)
         self.assertFalse(barcode_inserted)
@@ -72,13 +78,8 @@ class TestInsertBarcodeView(BaseTestCase):
 
     def test_corrupted_pdf_does_not_break_view(self):
         """ """
-        corrupt_file_pdf = api.content.create(
-            id='corrupt_file_pdf',
-            type='annex',
-            file=self.corrupt_file_pdf,
-            container=self.portal,
-            description='File description')
-        view = corrupt_file_pdf.restrictedTraverse('@@insert-barcode')
+        corrupted_annex = self.addAnnex(self.item, annexFile=self.annexFileCorruptedPDF)
+        view = corrupted_annex.restrictedTraverse('@@insert-barcode')
         self.assertEqual(IStatusMessage(self.request).show(), [])
         view()
         self.assertIsNone(view.context.scan_id)
@@ -101,9 +102,7 @@ class TestInsertBarcodeView(BaseTestCase):
 
     def test_may_insert_barcode(self):
         """Must be (Meeting)Manager able to edit the element to insert the barcode."""
-        # Manager may always insert barcode
-        manager_user = api.user.get_current()
-        self.assertTrue('Manager' in manager_user.getRoles())
+        self.assertTrue(self.tool.isManager(self.view.context))
         self.assertTrue(self.view.may_insert_barcode())
 
         # as normal user not able to edit

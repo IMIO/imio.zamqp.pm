@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from imio.zamqp.pm import testing
-from plone import api
 from plone import namedfile
-from plone.app.testing import login
 from Products.PloneMeeting.tests.PloneMeetingTestCase import PloneMeetingTestCase
 
 import os
@@ -48,26 +46,3 @@ class BaseTestCase(PloneMeetingTestCase):
 
         # enable docs scanning functionnality in PM
         self.portal.portal_plonemeeting.setEnableScanDocs(True)
-
-        api.user.create(
-            email='test@test.com',
-            username='adminuser',
-            password='Secret_123',
-        )
-        api.user.grant_roles(
-            username='adminuser',
-            roles=['Manager'],
-        )
-        login(self.portal, 'adminuser')
-        api.content.create(
-            id='file_txt',
-            type='annex',
-            file=self.file_txt,
-            container=self.portal,
-            description='File description')
-        api.content.create(
-            id='file_pdf',
-            type='annex',
-            file=self.file_pdf,
-            container=self.portal,
-            description='File description')
