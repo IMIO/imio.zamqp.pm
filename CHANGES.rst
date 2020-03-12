@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.8 (unreleased)
+0.8 (2020-03-12)
 ----------------
 
 - When cloning an item, make sure annexes having a `scan_id` are not kept.
