@@ -4,8 +4,9 @@ Changelog
 0.9 (unreleased)
 ----------------
 
-- Nothing changed yet.
-
+- Added test for `MeetingStoreItemsPodTemplateAsAnnexBatchActionForm` to ensure
+  that `Temporary QR code` label is not used in stored annex.
+  [gbastien]
 
 0.8 (2020-03-12)
 ----------------

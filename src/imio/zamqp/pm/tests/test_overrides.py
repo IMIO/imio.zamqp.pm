@@ -46,3 +46,27 @@ class TestOverrides(BaseTestCase):
         self.assertEqual(helper.get_scan_id(), '013999900000001')
         self.request.set('store_as_annex', '1')
         self.assertEqual(helper.get_scan_id(), '013999900000001')
+
+    def test_store_pod_template_as_annex_temporary_scan_id_batch_action(self):
+        """Test that temporary label is not displayed when using the batch action."""
+        cfg = self.meetingConfig
+        pod_template, annex_type, item = self._setupStorePodAsAnnex()
+
+        # configure batch action
+        cfg.setMeetingItemTemplateToStoreAsAnnex('itemTemplate__output_format__odt')
+
+        # create meeting with items
+        self.changeUser('pmManager')
+        meeting = self._createMeetingWithItems()
+        form = meeting.restrictedTraverse('@@store-items-template-as-annex-batch-action')
+
+        # store annex for every items
+        uids = [brain.UID for brain in meeting.getItems(ordered=True, theObjects=False)]
+        self.request.form['form.widgets.uids'] = ','.join(uids)
+        form.update()
+        form.handleApply(form, None)
+        items = meeting.getItems(ordered=True)
+        for an_item in items:
+            annexes = get_annexes(an_item)
+            self.assertEqual(len(annexes), 1)
+            import ipdb; ipdb.set_trace()
