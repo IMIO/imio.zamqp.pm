@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from imio.zamqp.pm.tests.base import BaseTestCase
+from Products.PloneMeeting.utils import get_annexes
 
 
 class TestOverrides(BaseTestCase):
@@ -31,6 +32,7 @@ class TestOverrides(BaseTestCase):
         self.changeUser('pmManager')
         self.request.set('template_uid', pod_template.UID())
         self.request.set('output_format', 'odt')
+        self.request.set('store_as_annex', '1')
         view = item.restrictedTraverse('@@document-generation')
         # by default, store_as_annex = '0'
         helper = view.get_generation_context_helper()
@@ -51,6 +53,8 @@ class TestOverrides(BaseTestCase):
         """Test that temporary label is not displayed when using the batch action."""
         cfg = self.meetingConfig
         pod_template, annex_type, item = self._setupStorePodAsAnnex()
+        # make sure store_as_annex='0', setup in _setupStorePodAsAnnex
+        self.request.set('store_as_annex', '0')
 
         # configure batch action
         cfg.setMeetingItemTemplateToStoreAsAnnex('itemTemplate__output_format__odt')
@@ -66,7 +70,9 @@ class TestOverrides(BaseTestCase):
         form.update()
         form.handleApply(form, None)
         items = meeting.getItems(ordered=True)
+        i = 1
         for an_item in items:
             annexes = get_annexes(an_item)
             self.assertEqual(len(annexes), 1)
-            import ipdb; ipdb.set_trace()
+            self.assertEqual(annexes[0].scan_id, u'01399990000000' + str(i))
+            i += 1
