@@ -7,6 +7,9 @@ Changelog
 - Added test for `MeetingStoreItemsPodTemplateAsAnnexBatchActionForm` to ensure
   that `Temporary QR code` label is not used in stored annex.
   [gbastien]
+- Add a `portal_message` when an annex is removed during duplication
+  because it holds a `scan_id`.
+  [gbastien]
 
 0.8 (2020-03-12)
 ----------------
