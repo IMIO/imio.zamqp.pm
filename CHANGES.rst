@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.9 (unreleased)
+0.9 (2020-04-29)
 ----------------
 
 - Added test for `MeetingStoreItemsPodTemplateAsAnnexBatchActionForm` to ensure
