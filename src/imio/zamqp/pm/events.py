@@ -4,7 +4,10 @@
 #
 
 from imio.actionspanel.utils import unrestrictedRemoveGivenObject
+from plone import api
+from Products.CMFPlone.utils import safe_unicode
 from Products.PloneMeeting.utils import get_annexes
+from zope.i18n import translate
 
 
 def onItemDuplicated(original, event):
@@ -14,3 +17,8 @@ def onItemDuplicated(original, event):
     for annex in annexes:
         if getattr(annex, 'scan_id', None):
             unrestrictedRemoveGivenObject(annex)
+            msg = translate('annex_not_kept_because_using_scan_id',
+                            mapping={'annexTitle': safe_unicode(annex.Title())},
+                            domain='PloneMeeting',
+                            context=newItem.REQUEST)
+            api.portal.show_message(msg, request=newItem.REQUEST, type='warning')

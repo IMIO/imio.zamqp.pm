@@ -1,11 +1,21 @@
 Changelog
 =========
 
-0.9 (unreleased)
+0.10 (unreleased)
+-----------------
+
+- Moved all the GS types profile logic to `Products.PloneMeeting`,
+  by default it will behave like if `imio.zamqp.pm` was enabled.
+  [gbastien]
+
+0.9 (2020-04-29)
 ----------------
 
 - Added test for `MeetingStoreItemsPodTemplateAsAnnexBatchActionForm` to ensure
   that `Temporary QR code` label is not used in stored annex.
+  [gbastien]
+- Add a `portal_message` when an annex is removed during duplication
+  because it holds a `scan_id`.
   [gbastien]
 
 0.8 (2020-03-12)
