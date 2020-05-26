@@ -11,7 +11,6 @@ from plone.app.testing import FunctionalTesting
 from plone.app.testing import IntegrationTesting
 from plone.testing import z2
 from plone.testing import zca
-from Products.CMFPlone.utils import base_hasattr
 from Products.PloneMeeting.testing import PMLayer
 
 import imio.zamqp.pm
