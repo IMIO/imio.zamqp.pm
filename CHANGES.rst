@@ -4,8 +4,9 @@ Changelog
 0.10 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Moved all the GS types profile logic to `Products.PloneMeeting`,
+  by default it will behave like if `imio.zamqp.pm` was enabled.
+  [gbastien]
 
 0.9 (2020-04-29)
 ----------------
