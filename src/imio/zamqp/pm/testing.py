@@ -28,14 +28,7 @@ def patched_file_content(self):
 
 
 class ImioZamqpPMLayer(PMLayer):
-
-    def setUpZope(self, app, configurationContext):
-        from App.config import _config
-        if not base_hasattr(_config, 'product_config'):
-            _config.product_config = {'imio.zamqp.core': {'ws_url': 'http://localhost:6543', 'ws_password': 'test',
-                                                          'ws_login': 'testuser', 'routing_key': '019999',
-                                                          'client_id': '019999'}}
-        super(ImioZamqpPMLayer, self).setUpZope(app, configurationContext)
+    """ """
 
 
 AMQP_PM_ZCML = zca.ZCMLSandbox(
