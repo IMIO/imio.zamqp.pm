@@ -42,7 +42,7 @@ pipeline {
 
         stage('Publish Coverage') {
             steps {
-                catchError() {
+                catchError(buildResult: null, stageResult: 'FAILURE') {
                     cobertura (
                         coberturaReportFile: '**/coverage.xml',
                         conditionalCoverageTargets: '70, 50, 20',
