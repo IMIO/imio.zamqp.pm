@@ -37,15 +37,22 @@ pipeline {
                     sh "bin/python bin/coverage run --source=imio.zamqp.pm bin/test"
                     sh 'bin/python bin/coverage xml -i --fail-under=80'
                 }
-                cobertura (
-                    coberturaReportFile: '**/coverage.xml',
-                    conditionalCoverageTargets: '70, 50, 20',
-                    lineCoverageTargets: '80, 50, 20',
-                    maxNumberOfBuilds: 1,
-                    methodCoverageTargets: '80, 50, 20',
-                    onlyStable: false,
-                    sourceEncoding: 'ASCII'
-                )
+            }
+        }
+
+        stage('Publish Coverage') {
+            steps {
+                catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+                    cobertura (
+                        coberturaReportFile: '**/coverage.xml',
+                        conditionalCoverageTargets: '70, 50, 20',
+                        lineCoverageTargets: '80, 50, 20',
+                        maxNumberOfBuilds: 1,
+                        methodCoverageTargets: '80, 50, 20',
+                        onlyStable: false,
+                        sourceEncoding: 'ASCII'
+                    )
+                }
             }
         }
     }
