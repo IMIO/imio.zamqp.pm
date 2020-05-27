@@ -35,7 +35,7 @@ pipeline {
             steps {
                 script {
                     sh "bin/python bin/coverage run --source=imio.zamqp.pm bin/test"
-                    sh 'bin/python bin/coverage xml -i'
+                    sh 'bin/python bin/coverage xml -i --fail-under=80'
                     cobertura coberturaReportFile: '**/coverage.xml', conditionalCoverageTargets: '70, 50, 20', lineCoverageTargets: '80, 50, 20', maxNumberOfBuilds: 0, methodCoverageTargets: '80, 50, 20', onlyStable: false, sourceEncoding: 'ASCII'
                 }
             }
