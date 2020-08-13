@@ -4,8 +4,10 @@ Changelog
 0.11 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Fixed `test_store_pod_template_as_annex_temporary_scan_id_batch_action` as
+  `MeetingConfig.meetingItemTemplateToStoreAsAnnex` (single value) was renamed to
+  `MeetingConfig.meetingItemTemplatesToStoreAsAnnex` (multi valued).
+  [gbastien]
 
 0.10 (2020-05-28)
 -----------------

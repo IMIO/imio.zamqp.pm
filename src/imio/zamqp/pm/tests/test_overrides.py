@@ -57,7 +57,7 @@ class TestOverrides(BaseTestCase):
         self.request.set('store_as_annex', '0')
 
         # configure batch action
-        cfg.setMeetingItemTemplateToStoreAsAnnex('itemTemplate__output_format__odt')
+        cfg.setMeetingItemTemplatesToStoreAsAnnex(['itemTemplate__output_format__odt'])
 
         # create meeting with items
         self.changeUser('pmManager')
@@ -67,6 +67,7 @@ class TestOverrides(BaseTestCase):
         # store annex for every items
         uids = [brain.UID for brain in meeting.getItems(ordered=True, theObjects=False)]
         self.request.form['form.widgets.uids'] = ','.join(uids)
+        self.request.form['form.widgets.pod_template'] = 'itemTemplate__output_format__odt'
         form.update()
         form.handleApply(form, None)
         items = meeting.getItems(ordered=True)
