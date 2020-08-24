@@ -8,6 +8,9 @@ Changelog
   `MeetingConfig.meetingItemTemplateToStoreAsAnnex` (single value) was renamed to
   `MeetingConfig.meetingItemTemplatesToStoreAsAnnex` (multi valued).
   [gbastien]
+- Fixed `test_may_insert_barcode`, now that we use roles
+  `Editor/Reader/Contributor` in `MeetingItem` workflow.
+  [gbastien]
 
 0.10 (2020-05-28)
 -----------------

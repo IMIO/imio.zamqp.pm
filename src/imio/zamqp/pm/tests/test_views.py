@@ -105,15 +105,8 @@ class TestInsertBarcodeView(BaseTestCase):
         self.assertTrue(self.tool.isManager(self.view.context))
         self.assertTrue(self.view.may_insert_barcode())
 
-        # as normal user not able to edit
+        # as normal user, able to edit but not able to insert barcode
         self.changeUser('pmCreator1')
-        self.assertFalse(self.member.has_permission(ModifyPortalContent, self.view.context))
-        self.assertFalse(self.view.may_insert_barcode())
-
-        # give user ability to edit element
-        self.view.context.manage_setLocalRoles(self.member.getId(), ('Editor', ))
-        # clean borg.localroles
-        cleanMemoize(self.portal, prefixes=['borg.localrole.workspace.checkLocalRolesAllowed'])
         self.assertTrue(self.member.has_permission(ModifyPortalContent, self.view.context))
         self.assertFalse(self.view.may_insert_barcode())
 

@@ -37,12 +37,5 @@ class BaseTestCase(PloneMeetingTestCase):
         self.portal = self.layer['portal']
         self.request = self.layer['request']
 
-        # use default workflow
-        wftool = self.portal['portal_workflow']
-        wftool.setDefaultChain('simple_publication_workflow')
-        wftool.setChainForPortalTypes(
-            ('annex', 'annexDecision'),
-            ('simple_publication_workflow',))
-
         # enable docs scanning functionnality in PM
         self.portal.portal_plonemeeting.setEnableScanDocs(True)
