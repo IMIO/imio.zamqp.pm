@@ -11,6 +11,9 @@ Changelog
 - Fixed `test_may_insert_barcode`, now that we use roles
   `Editor/Reader/Contributor` in `MeetingItem` workflow.
   [gbastien]
+- Fixed `test_store_pod_template_as_annex_temporary_scan_id_batch_action` broken
+  because Meeting moved from AT to DX.
+  [gbastien]
 
 0.10 (2020-05-28)
 -----------------

@@ -65,12 +65,12 @@ class TestOverrides(BaseTestCase):
         form = meeting.restrictedTraverse('@@store-items-template-as-annex-batch-action')
 
         # store annex for every items
-        uids = [brain.UID for brain in meeting.getItems(ordered=True, theObjects=False)]
-        self.request.form['form.widgets.uids'] = ','.join(uids)
-        self.request.form['form.widgets.pod_template'] = 'itemTemplate__output_format__odt'
+        uids = [brain.UID for brain in meeting.get_items(ordered=True, the_objects=False)]
+        self.request.form['form.widgets.uids'] = u','.join(uids)
+        self.request.form['form.widgets.pod_template'] = u'itemTemplate__output_format__odt'
         form.update()
         form.handleApply(form, None)
-        items = meeting.getItems(ordered=True)
+        items = meeting.get_items(ordered=True)
         i = 1
         for an_item in items:
             annexes = get_annexes(an_item)
