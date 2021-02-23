@@ -11,6 +11,8 @@ Changelog
 - Fixed `test_may_insert_barcode`, now that we use roles
   `Editor/Reader/Contributor` in `MeetingItem` workflow.
   [gbastien]
+- Do not use devpi.imio.be index anymore for buildout.
+  [gbastien]
 
 0.10 (2020-05-28)
 -----------------
