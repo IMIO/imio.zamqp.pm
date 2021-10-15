@@ -16,6 +16,8 @@ Changelog
   [gbastien]
 - Do not use devpi.imio.be index anymore for buildout.
   [gbastien]
+- Factorized use of `DEFAULT_SCAN_ID` in tests.
+  [gbastien]
 
 0.10 (2020-05-28)
 -----------------

@@ -3,6 +3,7 @@
 from imio.prettylink.interfaces import IPrettyLink
 from imio.zamqp.pm.interfaces import IImioZamqpPMSettings
 from imio.zamqp.pm.tests.base import BaseTestCase
+from imio.zamqp.pm.tests.base import DEFAULT_SCAN_ID
 from imio.zamqp.pm.utils import next_scan_id_pm
 from plone import api
 from Products.CMFCore.permissions import ModifyPortalContent
@@ -12,9 +13,6 @@ from Products.statusmessages.interfaces import IStatusMessage
 from zope.event import notify
 from zope.i18n import translate
 from zope.lifecycleevent import ObjectModifiedEvent
-
-
-DEFAULT_SCAN_ID = '013999900000001'
 
 
 class TestInsertBarcodeView(BaseTestCase):
@@ -98,7 +96,7 @@ class TestInsertBarcodeView(BaseTestCase):
         self.assertIsNone(self.view.context.scan_id)
         self._check_barcode_inserted_correctly()
         self.assertEqual(self.view.context.scan_id, DEFAULT_SCAN_ID)
-        self.assertEqual(next_scan_id_pm(), '013999900000002')
+        self.assertEqual(next_scan_id_pm(), u'013999900000002')
 
     def test_may_insert_barcode(self):
         """Must be (Meeting)Manager able to edit the element to insert the barcode."""

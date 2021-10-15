@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from imio.zamqp.pm.tests.base import BaseTestCase
+from imio.zamqp.pm.tests.base import DEFAULT_SCAN_ID
 from Products.PloneMeeting.utils import get_annexes
 
 
@@ -37,17 +38,18 @@ class TestOverrides(BaseTestCase):
         # by default, store_as_annex = '0'
         helper = view.get_generation_context_helper()
         self.request.set('store_as_annex', '0')
-        self.assertEqual(helper.get_scan_id(), '013999900000001\n[Temporary QR code!]')
+        self.assertEqual(helper.get_scan_id(),
+                         u'{0}\n[Temporary QR code!]'.format(DEFAULT_SCAN_ID))
         self.request.set('store_as_annex', '1')
-        self.assertEqual(helper.get_scan_id(), '013999900000001')
+        self.assertEqual(helper.get_scan_id(), DEFAULT_SCAN_ID)
 
         # when stored as annex, generating the POD template will return correct QR code
         view()
         helper = view.get_generation_context_helper()
         self.request.set('store_as_annex', '0')
-        self.assertEqual(helper.get_scan_id(), '013999900000001')
+        self.assertEqual(helper.get_scan_id(), DEFAULT_SCAN_ID)
         self.request.set('store_as_annex', '1')
-        self.assertEqual(helper.get_scan_id(), '013999900000001')
+        self.assertEqual(helper.get_scan_id(), DEFAULT_SCAN_ID)
 
     def test_store_pod_template_as_annex_temporary_scan_id_batch_action(self):
         """Test that temporary label is not displayed when using the batch action."""

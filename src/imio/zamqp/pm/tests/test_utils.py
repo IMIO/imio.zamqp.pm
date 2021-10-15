@@ -3,6 +3,7 @@
 from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
 from imio.zamqp.pm.tests.base import BaseTestCase
+from imio.zamqp.pm.tests.base import DEFAULT_SCAN_ID
 from imio.zamqp.pm.utils import next_scan_id_pm
 
 
@@ -15,11 +16,11 @@ class TestUtils(BaseTestCase):
         annex = self.addAnnex(item)
 
         # for now, first scan_id returned
-        self.assertEqual(next_scan_id_pm(), '013999900000001')
+        self.assertEqual(next_scan_id_pm(), DEFAULT_SCAN_ID)
 
         # store a scan_id on annex1
         annex.scan_id = next_scan_id_pm()
         notify(ObjectModifiedEvent(annex))
 
-        self.assertEqual(annex.scan_id, '013999900000001')
-        self.assertEqual(next_scan_id_pm(), '013999900000002')
+        self.assertEqual(annex.scan_id, DEFAULT_SCAN_ID)
+        self.assertEqual(next_scan_id_pm(), u'013999900000002')
