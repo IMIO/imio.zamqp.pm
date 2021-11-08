@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.11 (unreleased)
+0.11 (2021-11-08)
 -----------------
 
 - Fixed `test_store_pod_template_as_annex_temporary_scan_id_batch_action` as
