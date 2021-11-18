@@ -1,19 +1,19 @@
 # -*- coding: utf-8 -*-
 
-from zope.i18n import translate
-from zope.interface import implements
-from zope.schema.vocabulary import SimpleVocabulary
-from zope.schema.interfaces import IVocabularyFactory
-
 from collective.iconifiedcategory.content.category import CategorySchemaPolicy
 from collective.iconifiedcategory.content.categorygroup import ICategoryGroup
 from collective.iconifiedcategory.content.subcategory import SubcategorySchemaPolicy
+from imio.helpers.content import find
 from imio.zamqp.pm.interfaces import ICategoryZamqp
 from imio.zamqp.pm.interfaces import ISubcategoryZamqp
 from plone import api
 from Products.CMFPlone.utils import safe_unicode
 from Products.PloneMeeting.adapters import PMAnnexPrettyLinkAdapter
 from Products.PloneMeeting.config import BARCODE_INSERTED_ATTR_ID
+from zope.i18n import translate
+from zope.interface import implements
+from zope.schema.interfaces import IVocabularyFactory
+from zope.schema.vocabulary import SimpleVocabulary
 
 
 class IZPMAnnexPrettyLinkAdapter(PMAnnexPrettyLinkAdapter):
@@ -65,10 +65,11 @@ class AfterScanChangeAnnexTypeToVocabulary(object):
                     category_uid,
                     category_title,
                 ))
-                subcategories = api.content.find(
+                subcategories = find(
                     context=category,
                     object_provides='collective.iconifiedcategory.content.subcategory.ISubcategory',
                     enabled=True,
+                    unrestricted=True
                 )
                 for subcategory in subcategories:
                     subcategory_uid = subcategory.UID
