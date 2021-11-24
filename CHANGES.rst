@@ -6,6 +6,8 @@ Changelog
 
 - Use unrestricted catalog query in `AfterScanChangeAnnexTypeToVocabulary`.
   [gbastien]
+- Optimize ram.cache for `ToolPloneMeeting.isManager` by calling it with cfg as context.
+  [gbastien]
 
 0.11 (2021-11-08)
 -----------------

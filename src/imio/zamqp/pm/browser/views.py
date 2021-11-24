@@ -14,6 +14,7 @@ from plone import api
 from plone.namedfile.file import NamedBlobFile
 from plone.rfc822.interfaces import IPrimaryFieldInfo
 from Products.CMFCore.permissions import ModifyPortalContent
+from Products.CMFCore.utils import _checkPermission
 from Products.Five import BrowserView
 from Products.PloneMeeting.config import BARCODE_INSERTED_ATTR_ID
 from Products.PloneMeeting.utils import version_object
@@ -126,13 +127,15 @@ class InsertBarcodeView(BrowserView):
            barcode must not be already inserted."""
         res = False
         if self.tool.getEnableScanDocs():
-            member = api.user.get_current()
             # bypass for 'Manager'
-            if 'Manager' in member.getRoles():
+            if self.tool.isManager(self.tool, realManagers=True):
                 res = True
             else:
-                isManager = self.tool.isManager(self.context)
+                cfg = self.tool.getMeetingConfig(self.context)
+                isManager = self.tool.isManager(cfg)
                 barcode_inserted = getattr(self.context, BARCODE_INSERTED_ATTR_ID, False)
-                if isManager and not barcode_inserted and member.has_permission(ModifyPortalContent, self.context):
+                if isManager and \
+                   not barcode_inserted and \
+                   _checkPermission(ModifyPortalContent, self.context):
                     res = True
         return res

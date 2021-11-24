@@ -100,7 +100,7 @@ class TestInsertBarcodeView(BaseTestCase):
 
     def test_may_insert_barcode(self):
         """Must be (Meeting)Manager able to edit the element to insert the barcode."""
-        self.assertTrue(self.tool.isManager(self.view.context))
+        self.assertTrue(self.tool.isManager(self.meetingConfig))
         self.assertTrue(self.view.may_insert_barcode())
 
         # as normal user, able to edit but not able to insert barcode
