@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.12 (unreleased)
+0.12 (2021-11-26)
 -----------------
 
 - Use unrestricted catalog query in `AfterScanChangeAnnexTypeToVocabulary`.
