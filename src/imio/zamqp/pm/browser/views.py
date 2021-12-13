@@ -118,7 +118,7 @@ class InsertBarcodeView(BrowserView):
                         default="Barcode inserted successfully!")
 
         # update modificationDate, it is used for caching and co
-        notifyModifiedAndReindex(self.context, idxs=['scan_id'])
+        notifyModifiedAndReindex(self.context, extra_idxs=['scan_id'])
         plone_utils.addPortalMessage(msg)
         return self.request.RESPONSE.redirect(self.request['HTTP_REFERER'])
 
