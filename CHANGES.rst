@@ -4,8 +4,9 @@ Changelog
 0.13 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Use `notifyModifiedAndReindex(idxs=['scan_id'])` that will only update relevant
+  modification data and `scan_id` after barcode inserted in PDF file.
+  [gbastien]
 
 0.12 (2021-11-26)
 -----------------

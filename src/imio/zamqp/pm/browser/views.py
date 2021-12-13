@@ -17,6 +17,7 @@ from Products.CMFCore.permissions import ModifyPortalContent
 from Products.CMFCore.utils import _checkPermission
 from Products.Five import BrowserView
 from Products.PloneMeeting.config import BARCODE_INSERTED_ATTR_ID
+from Products.PloneMeeting.utils import notifyModifiedAndReindex
 from Products.PloneMeeting.utils import version_object
 from PyPDF2.utils import PdfReadError
 from zope.i18n import translate
@@ -116,9 +117,8 @@ class InsertBarcodeView(BrowserView):
                         context=self.request,
                         default="Barcode inserted successfully!")
 
-        # notify modified and return
-        self.context.notifyModified()
-        self.context.reindexObject()
+        # update modificationDate, it is used for caching and co
+        notifyModifiedAndReindex(self.context, idxs=['scan_id'])
         plone_utils.addPortalMessage(msg)
         return self.request.RESPONSE.redirect(self.request['HTTP_REFERER'])
 
