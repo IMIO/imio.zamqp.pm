@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.13 (unreleased)
+0.13 (2022-01-03)
 -----------------
 
 - Use `notifyModifiedAndReindex(idxs=['scan_id'])` that will only update relevant
