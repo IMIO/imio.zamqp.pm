@@ -128,7 +128,7 @@ class InsertBarcodeView(BrowserView):
         res = False
         if self.tool.getEnableScanDocs():
             # bypass for 'Manager'
-            if self.tool.isManager(self.tool, realManagers=True):
+            if self.tool.isManager(realManagers=True):
                 res = True
             else:
                 cfg = self.tool.getMeetingConfig(self.context)

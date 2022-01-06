@@ -4,8 +4,9 @@ Changelog
 0.14 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Fixed call to `ToolPloneMeeting.isManager`, when called with
+  `realManagers=True`, no context can be passed.
+  [gbastien]
 
 0.13 (2022-01-03)
 -----------------
