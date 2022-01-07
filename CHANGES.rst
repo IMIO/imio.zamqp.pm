@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.14 (unreleased)
+0.14 (2022-01-07)
 -----------------
 
 - Fixed call to `ToolPloneMeeting.isManager`, when called with
