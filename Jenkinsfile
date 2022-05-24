@@ -34,6 +34,7 @@ pipeline {
         stage('Test Coverage') {
             steps {
                 script {
+                    sh "bin/pip install -U 'coverage==5.3.1'"
                     sh "bin/python bin/coverage run --source=imio.zamqp.pm bin/test"
                     sh 'bin/python bin/coverage xml -i --fail-under=80'
                 }
