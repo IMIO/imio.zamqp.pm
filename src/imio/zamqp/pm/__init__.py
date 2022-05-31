@@ -1,4 +1,6 @@
 from zope.i18nmessageid import MessageFactory
+
+
 _ = MessageFactory('imio.zamqp.pm')
 
 

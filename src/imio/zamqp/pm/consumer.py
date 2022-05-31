@@ -1,20 +1,21 @@
-# encoding: utf-8
+# -*- coding: utf-8 -*-
 
-from zope.event import notify
-from zope.lifecycleevent import ObjectModifiedEvent
-
-from collective.iconifiedcategory.utils import get_category_object
+from collective.iconifiedcategory.behaviors.iconifiedcategorization import IIconifiedCategorization
 from collective.iconifiedcategory.utils import calculate_category_id
+from collective.iconifiedcategory.utils import get_category_object
 from collective.zamqp.consumer import Consumer
 from imio.zamqp.core import base
 from imio.zamqp.core.consumer import consume
 from imio.zamqp.core.consumer import DMSMainFile
 from imio.zamqp.pm import interfaces
-from Products.PloneMeeting.utils import version_object
-
 from plone import api
+from Products.PloneMeeting.utils import version_object
+from zope.event import notify
+from zope.lifecycleevent import ObjectModifiedEvent
 
 import logging
+
+
 logger = logging.getLogger('imio.zamqp.pm')
 
 
@@ -51,7 +52,10 @@ class IconifiedAnnex(DMSMainFile):
         if not brains:
             return
         to_annex_type = brains[0].getObject()
-        the_file.content_category = calculate_category_id(to_annex_type)
+        # use the adapted_file to set content_category so setter is used to
+        # change new default values for attributes confidential/to_print/publishable/...
+        adapted_file = IIconifiedCategorization(the_file)
+        adapted_file.content_category = calculate_category_id(to_annex_type)
 
         # for items, the annex_type can move from item_annex type to item_decision_annex type
         # and the other way round, in this case, the annex portal_type changed

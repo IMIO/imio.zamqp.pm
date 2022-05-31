@@ -4,8 +4,10 @@ Changelog
 0.15 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- In `consumer._manage_after_scan_change_annex_type_to`, set the `content_category`
+  on the adapted context (with `IIconifiedCategorization` behavior) so the
+  `@content_category.setter` is called and default values are adapted accordingly.
+  [gbastien]
 
 0.14 (2022-01-07)
 -----------------

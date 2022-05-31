@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
 from collective.iconifiedcategory.utils import get_category_object
 from collective.zamqp.message import Message
 from collective.zamqp.message import MessageArrivedEvent
+from datetime import datetime
 from imio.zamqp.pm.interfaces import IIconifiedAnnex
 from imio.zamqp.pm.interfaces import IImioZamqpPMSettings
 from imio.zamqp.pm.testing import NEW_FILE_CONTENT
@@ -13,6 +13,7 @@ from imio.zamqp.pm.utils import next_scan_id_pm
 from plone import api
 from zope.event import notify
 from zope.interface import alsoProvides
+
 
 DEFAULT_BODY_PATTERN = """ccopy_reg\n_reconstructor\np1\n(cimio.dataexchange.core.dms\nDeliberation\np2\nc__builtin__\nobject\np3\nNtRp4\n(dp5\nS'_doc'\np6\ng1\n(cimio.dataexchange.core.document\nDocument\np7\ng3\nNtRp8\n(dp9\nS'update_date'\np10\ncdatetime\ndatetime\np11\n(S'\\x07\\xe1\\x0b\\x07\\x0f&\\x13\\x08\\xac\\xe8'\ntRp12\nsS'external_id'\np13\nV{0}\np14\nsS'file_md5'\np15\nV23aebcae4ee8f5134da4fa5523abd3dd\np16\nsS'version'\np17\nI6\nsS'user'\np18\nVtestuser\np19\nsS'client_id'\np20\nV019999\np21\nsS'date'\np22\ng11\n(S'\\x07\\xe1\\x0b\\x07\\x0f&\\x13\\x08\\x99\\\\'\ntRp23\nsS'file_metadata'\np24\n(dp25\nVcreator\np26\nVscanner\np27\nsVscan_hour\np28\nV15:00:00\np29\nsVscan_date\np30\nV2014-11-20\np31\nsVupdate\np32\nI01\nsVfilemd5\np33\nV23aebcae4ee8f5134da4fa5523abd3dd\np34\nsVpc\np35\nVpc-scan01\np36\nsVuser\np37\nVtestuser\np38\nsVfilename\np39\nVREADME.rst\np40\nsVpages_number\np41\nI1\nsVfilesize\np42\nI1284\nssS'type'\np43\nVDELIB\np44\nsbsb."""
 
@@ -106,11 +107,17 @@ class TestConsumer(BaseTestCase):
         annex_updater = self._get_consumer_object()
         self.changeUser('pmCreator1')
         item = self.create('MeetingItem')
-        annex = self.addAnnex(item)
+        # attributes confidential/to_print/publishable/... are updated
+        # with default value of the annex_type
+        self._enable_annex_config(item, param="confidentiality")
+        self._enable_annex_config(item, param="publishable")
+        annex = self.addAnnex(item, confidential=True)
         annex_uid = annex.UID()
         annex.scan_id = next_scan_id_pm()
         annex.reindexObject(idxs=['scan_id'])
+        # set confidential=True by default so default values are changed when scanned
         original_annex_type = get_category_object(annex, annex.content_category)
+        original_annex_type.confidential = True
         original_annex_type_uid = original_annex_type.UID()
         self.assertEqual(original_annex_type.id, 'financial-analysis')
         self.assertEqual(
@@ -119,6 +126,7 @@ class TestConsumer(BaseTestCase):
 
         # nothing done if nothing defined
         self.assertIsNone(original_annex_type.after_scan_change_annex_type_to)
+        self.changeUser('siteadmin')
         annex_updater.create_or_update()
         # annex find in catalog and categorized_elements correct
         self.assertTrue(api.content.find(content_category_uid=original_annex_type_uid))
@@ -126,6 +134,12 @@ class TestConsumer(BaseTestCase):
         self.assertEqual(
             original_annex_type_uid,
             annex.categorized_elements[annex_uid]['category_uid'])
+        # attributes are still correct
+        self.assertTrue(annex.confidential)
+        self.assertFalse(annex.publishable)
+        # to_sign/signed is forcingly set to True
+        self.assertTrue(annex.to_sign)
+        self.assertTrue(annex.signed)
 
         # wrong value in after_scan_change_annex_type_to like a removed annex_type
         # does not break
@@ -140,6 +154,7 @@ class TestConsumer(BaseTestCase):
 
         # get another annex_type and set it as after_scan_change_annex_type_to
         another_annex_type = original_annex_type.aq_parent.get('budget-analysis')
+        another_annex_type.publishable = True
         another_annex_type_uid = another_annex_type.UID()
         original_annex_type.after_scan_change_annex_type_to = another_annex_type_uid
 
@@ -155,6 +170,12 @@ class TestConsumer(BaseTestCase):
         self.assertEqual(
             another_annex_type_uid,
             annex.categorized_elements[annex_uid]['category_uid'])
+        # attributes were updated
+        self.assertFalse(annex.confidential)
+        self.assertTrue(annex.publishable)
+        # to_sign/signed is forcingly set to True
+        self.assertTrue(annex.to_sign)
+        self.assertTrue(annex.signed)
 
     def _item_with_annex_with_scan_id(self):
         """Helper method that creates an item containing an annex with scan_id."""

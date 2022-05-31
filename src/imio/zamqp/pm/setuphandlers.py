@@ -8,9 +8,11 @@
 #
 
 
-import logging
-from imio.helpers.catalog import addOrUpdateIndexes
 from imio.helpers.catalog import addOrUpdateColumns
+from imio.helpers.catalog import addOrUpdateIndexes
+
+import logging
+
 
 logger = logging.getLogger('imio.zamqp.pm: setuphandlers')
 

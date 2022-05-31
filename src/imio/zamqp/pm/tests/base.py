@@ -6,6 +6,7 @@ from Products.PloneMeeting.tests.PloneMeetingTestCase import PloneMeetingTestCas
 
 import os
 
+
 DEFAULT_SCAN_ID = u'013999900000001'
 
 

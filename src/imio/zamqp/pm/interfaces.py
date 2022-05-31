@@ -3,8 +3,8 @@
 from collective.iconifiedcategory.content.category import ICategory
 from collective.iconifiedcategory.content.subcategory import ISubcategory
 from imio.zamqp.pm import _
-from zope.interface import Interface
 from zope import schema
+from zope.interface import Interface
 
 
 class IIconifiedAnnex(Interface):

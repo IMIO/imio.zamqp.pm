@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from zope.event import notify
-from zope.lifecycleevent import ObjectModifiedEvent
 from imio.zamqp.pm.tests.base import BaseTestCase
 from imio.zamqp.pm.tests.base import DEFAULT_SCAN_ID
 from imio.zamqp.pm.utils import next_scan_id_pm
+from zope.event import notify
+from zope.lifecycleevent import ObjectModifiedEvent
 
 
 class TestUtils(BaseTestCase):
