@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.15 (unreleased)
+0.15 (2022-06-14)
 -----------------
 
 - In `consumer._manage_after_scan_change_annex_type_to`, set the `content_category`
