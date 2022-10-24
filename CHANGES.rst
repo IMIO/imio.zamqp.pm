@@ -4,8 +4,9 @@ Changelog
 0.16 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Adapted call to `imio.zamqp.core.utils.next_scan_id` where typo in parameter
+  `cliend_id_var` was fixed to `client_id_var`.
+  [gbastien]
 
 0.15 (2022-06-14)
 -----------------
