@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.16 (unreleased)
+0.16 (2023-02-27)
 -----------------
 
 - Adapted call to `imio.zamqp.core.utils.next_scan_id` where typo in parameter
