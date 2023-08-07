@@ -43,14 +43,6 @@ msgstr ""
 msgid "icon_help_barcode_inserted"
 msgstr ""
 
-#. Default: "New annex type when annex is update by the scan document process"
-msgid "after_scan_change_annex_type_to_title"
-msgstr ""
-
-#. Default: "When an annex using this annex type will be updated by the scan document automatic process, the annex type will be changed to the selected category.  If nothing is selected, the original annex type will remain"
-msgid "after_scan_change_annex_type_to_descr"
-msgstr ""
-
 #. Default: "Save a version of the annex when inserting the barcode."
 msgid "Save a version of the annex when inserting the barcode."
 msgstr ""
