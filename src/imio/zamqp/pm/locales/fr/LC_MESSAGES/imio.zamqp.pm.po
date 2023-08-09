@@ -34,14 +34,6 @@ msgstr "Valeur du paramètre 'x' lors de l'insertion du code-barres dans un fich
 msgid "Value of y when inserting barcode into a PDF file."
 msgstr "Valeur du paramètre 'y' lors de l'insertion du code-barres dans un fichier PDF."
 
-#. Default: "When an annex using this annex type will be updated by the scan document automatic process, the annex type will be changed to the selected category.  If nothing is selected, the original annex type will remain"
-msgid "after_scan_change_annex_type_to_descr"
-msgstr "Lorsqu'une annexe qui utilise ce type d'annexe sera mise à jour par la procédure de scan de documents, le type d'annexe sera automatiquement changé vers celui sélectionné ici.  Si rien n'est sélectionné, le type d'annexe original sera gardé."
-
-#. Default: "New annex type when annex is update by the scan document process"
-msgid "after_scan_change_annex_type_to_title"
-msgstr "Nouveau type d'annexe à utiliser après mise à jour par la procédure de scan de documents"
-
 #. Default: "Barcode already inserted!"
 msgid "barcode_already_inserted"
 msgstr "Un code-barres a déjà été inséré dans ce fichier!"

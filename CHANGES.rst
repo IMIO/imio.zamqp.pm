@@ -4,8 +4,9 @@ Changelog
 0.17 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Moved `collective.iconifiedcategory` `ContentCategory` overrides
+  back to `Products.PloneMeeting`.
+  [gbastien]
 
 0.16 (2023-02-27)
 -----------------

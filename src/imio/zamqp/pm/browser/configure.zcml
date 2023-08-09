@@ -13,14 +13,12 @@
         for="Products.PloneMeeting.interfaces.IMeetingItem"
         name="document-generation"
         class=".overrides.AMQPPMDocumentGenerationView"
-        permission="zope2.View"
-        />
+        permission="zope2.View" />
 
     <browser:view
       for="imio.annex.content.annex.IAnnex"
       name="insert-barcode"
       class=".views.InsertBarcodeView"
-      permission="zope2.View"
-      />
+      permission="zope2.View" />
 
 </configure>
