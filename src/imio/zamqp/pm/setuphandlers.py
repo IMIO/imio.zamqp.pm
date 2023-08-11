@@ -8,18 +8,10 @@
 #
 
 
-from imio.helpers.catalog import addOrUpdateColumns
-from imio.helpers.catalog import addOrUpdateIndexes
-
 import logging
 
 
 logger = logging.getLogger('imio.zamqp.pm: setuphandlers')
-
-indexInfos = {
-    'scan_id': ('FieldIndex', {}),
-}
-columnInfos = ('scan_id', )
 
 
 def postInstall(context):
@@ -27,9 +19,6 @@ def postInstall(context):
     if isNotImioZamqpPmProfile(context):
         return
     site = context.getSite()
-
-    addOrUpdateIndexes(site, indexInfos)
-    addOrUpdateColumns(site, columnInfos)
 
 
 def isNotImioZamqpPmProfile(context):

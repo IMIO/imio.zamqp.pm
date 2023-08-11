@@ -7,6 +7,13 @@ Changelog
 - Moved `collective.iconifiedcategory` `ContentCategory` overrides
   back to `Products.PloneMeeting`.
   [gbastien]
+- Cleaned code:
+
+  - removed event that deleted copied annexes with a `scan_id`,
+    now managed by `Products.PloneMeeting`;
+  - removed setup for `scan_id` index, done by `collective.dms.scanbehavior`.
+
+  [gbastien]
 
 0.16 (2023-02-27)
 -----------------
