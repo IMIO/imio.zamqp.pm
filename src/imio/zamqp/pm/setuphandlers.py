@@ -18,7 +18,6 @@ def postInstall(context):
     """Called at the end of the setup process. """
     if isNotImioZamqpPmProfile(context):
         return
-    site = context.getSite()
 
 
 def isNotImioZamqpPmProfile(context):
