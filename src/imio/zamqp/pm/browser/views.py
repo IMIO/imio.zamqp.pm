@@ -127,15 +127,10 @@ class InsertBarcodeView(BrowserView):
            barcode must not be already inserted."""
         res = False
         if self.tool.getEnableScanDocs():
-            # bypass for 'Manager'
-            if self.tool.isManager(realManagers=True):
+            cfg = self.tool.getMeetingConfig(self.context)
+            # is manager and no barcode already inserted and element still editable
+            if self.tool.isManager(cfg) and \
+               not getattr(self.context, BARCODE_INSERTED_ATTR_ID, False) and \
+               _checkPermission(ModifyPortalContent, self.context):
                 res = True
-            else:
-                cfg = self.tool.getMeetingConfig(self.context)
-                isManager = self.tool.isManager(cfg)
-                barcode_inserted = getattr(self.context, BARCODE_INSERTED_ATTR_ID, False)
-                if isManager and \
-                   not barcode_inserted and \
-                   _checkPermission(ModifyPortalContent, self.context):
-                    res = True
         return res
