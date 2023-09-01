@@ -14,6 +14,9 @@ Changelog
   - removed setup for `scan_id` index, done by `collective.dms.scanbehavior`.
 
   [gbastien]
+- Take into account new parameter `MeetingConfig.annexEditorMayInsertBarcode`
+  in `InsertBarcodeView.may_insert_barcode`.
+  [gbastien]
 
 0.16 (2023-02-27)
 -----------------

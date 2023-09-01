@@ -100,7 +100,8 @@ class TestInsertBarcodeView(BaseTestCase):
 
     def test_may_insert_barcode(self):
         """Must be (Meeting)Manager able to edit the element to insert the barcode."""
-        self.assertTrue(self.tool.isManager(self.meetingConfig))
+        cfg = self.meetingConfig
+        self.assertTrue(self.tool.isManager(cfg))
         self.assertTrue(self.view.may_insert_barcode())
 
         # as normal user, able to edit but not able to insert barcode
@@ -111,6 +112,15 @@ class TestInsertBarcodeView(BaseTestCase):
         # now as MeetingManager
         self.changeUser('pmManager')
         self.view.context.manage_setLocalRoles(self.member.getId(), ('MeetingManager', 'Editor'))
+        # clean borg.localroles
+        cleanMemoize(self.portal, prefixes=['borg.localrole.workspace.checkLocalRolesAllowed'])
+        self.assertTrue(self.member.has_permission(ModifyPortalContent, self.view.context))
+        self.assertTrue(self.view.may_insert_barcode())
+
+        # when MeetingConfig.annexEditorMayInsertBarcode is True, an editor may insert barcode
+        self.changeUser('pmCreator1')
+        self.assertFalse(cfg.getAnnexEditorMayInsertBarcode())
+        cfg.setAnnexEditorMayInsertBarcode(True)
         # clean borg.localroles
         cleanMemoize(self.portal, prefixes=['borg.localrole.workspace.checkLocalRolesAllowed'])
         self.assertTrue(self.member.has_permission(ModifyPortalContent, self.view.context))

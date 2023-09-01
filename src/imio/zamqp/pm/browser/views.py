@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
 #
-# File: overrides.py
-#
-# Copyright (c) 2017 by Imio.be
-#
 # GNU General Public License (GPL)
 #
 
+from imio.helpers.content import base_getattr
 from imio.helpers.pdf import BarcodeStamp
 from imio.zamqp.pm.interfaces import IImioZamqpPMSettings
 from imio.zamqp.pm.utils import next_scan_id_pm
@@ -129,8 +126,8 @@ class InsertBarcodeView(BrowserView):
         if self.tool.getEnableScanDocs():
             cfg = self.tool.getMeetingConfig(self.context)
             # is manager and no barcode already inserted and element still editable
-            if self.tool.isManager(cfg) and \
-               not getattr(self.context, BARCODE_INSERTED_ATTR_ID, False) and \
+            if (self.tool.isManager(cfg) or cfg.getAnnexEditorMayInsertBarcode()) and \
+               not base_getattr(self.context, BARCODE_INSERTED_ATTR_ID, False) and \
                _checkPermission(ModifyPortalContent, self.context):
                 res = True
         return res
