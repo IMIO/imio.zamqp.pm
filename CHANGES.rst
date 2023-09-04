@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.17 (unreleased)
+0.17 (2023-09-04)
 -----------------
 
 - Moved `collective.iconifiedcategory` `ContentCategory` overrides
