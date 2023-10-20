@@ -13,7 +13,6 @@ from plone.rfc822.interfaces import IPrimaryFieldInfo
 from Products.CMFCore.permissions import ModifyPortalContent
 from Products.CMFCore.utils import _checkPermission
 from Products.Five import BrowserView
-from Products.PloneMeeting.config import BARCODE_INSERTED_ATTR_ID
 from Products.PloneMeeting.utils import notifyModifiedAndReindex
 from Products.PloneMeeting.utils import version_object
 from PyPDF2.utils import PdfReadError
@@ -30,9 +29,8 @@ class InsertBarcodeView(BrowserView):
     def __call__(self, x=None, y=None, scale=None, force=False):
         """ """
         plone_utils = api.portal.get_tool('plone_utils')
-        barcode_inserted = getattr(self.context, BARCODE_INSERTED_ATTR_ID, False)
         # barcode already inserted?
-        if barcode_inserted and not force:
+        if self.context.scan_id and not force:
             msg = translate('barcode_already_inserted',
                             domain='imio.zamqp.pm',
                             context=self.request,
@@ -108,7 +106,6 @@ class InsertBarcodeView(BrowserView):
 
         # success
         self.context.scan_id = scan_id
-        setattr(self.context, BARCODE_INSERTED_ATTR_ID, True)
         msg = translate('barcode_inserted',
                         domain='imio.zamqp.pm',
                         context=self.request,
@@ -127,7 +124,7 @@ class InsertBarcodeView(BrowserView):
             cfg = self.tool.getMeetingConfig(self.context)
             # is manager and no barcode already inserted and element still editable
             if (self.tool.isManager(cfg) or cfg.getAnnexEditorMayInsertBarcode()) and \
-               not base_getattr(self.context, BARCODE_INSERTED_ATTR_ID, False) and \
+               not self.context.scan_id and \
                _checkPermission(ModifyPortalContent, self.context):
                 res = True
         return res

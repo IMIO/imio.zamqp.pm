@@ -7,7 +7,6 @@ from imio.zamqp.pm.tests.base import DEFAULT_SCAN_ID
 from imio.zamqp.pm.utils import next_scan_id_pm
 from plone import api
 from Products.CMFCore.permissions import ModifyPortalContent
-from Products.PloneMeeting.config import BARCODE_INSERTED_ATTR_ID
 from Products.PloneMeeting.utils import cleanMemoize
 from Products.statusmessages.interfaces import IStatusMessage
 from zope.event import notify
@@ -30,6 +29,7 @@ class TestInsertBarcodeView(BaseTestCase):
 
     def _check_barcode_inserted_correctly(self):
         """ """
+        self.assertIsNone(self.view.context.scan_id)
         self.view()
         messages = IStatusMessage(self.request).show()
         translated_msg = translate(u'barcode_inserted',
@@ -37,10 +37,6 @@ class TestInsertBarcodeView(BaseTestCase):
                                    context=self.request)
         self.assertEqual(messages[-1].message, translated_msg)
         self.assertEqual(self.view.context.scan_id, DEFAULT_SCAN_ID)
-        barcode_inserted = getattr(self.view.context,
-                                   BARCODE_INSERTED_ATTR_ID,
-                                   False)
-        self.assertTrue(barcode_inserted)
 
     def test_barcode_inserted_in_pdf_file(self):
         """Working behavior."""
@@ -51,12 +47,9 @@ class TestInsertBarcodeView(BaseTestCase):
         """ """
         # nothing done and a message is added
         self.assertEqual(IStatusMessage(self.request).show(), [])
+        self.assertIsNone(self.view_txt.context.scan_id)
         self.view_txt()
         self.assertIsNone(self.view_txt.context.scan_id)
-        barcode_inserted = getattr(self.view_txt.context,
-                                   BARCODE_INSERTED_ATTR_ID,
-                                   False)
-        self.assertFalse(barcode_inserted)
         messages = IStatusMessage(self.request).show()
         translated_msg = translate(u'barcode_file_must_be_pdf',
                                    domain='imio.zamqp.pm',
@@ -79,12 +72,9 @@ class TestInsertBarcodeView(BaseTestCase):
         corrupted_annex = self.addAnnex(self.item, annexFile=self.annexFileCorruptedPDF)
         view = corrupted_annex.restrictedTraverse('@@insert-barcode')
         self.assertEqual(IStatusMessage(self.request).show(), [])
+        self.assertIsNone(view.context.scan_id)
         view()
         self.assertIsNone(view.context.scan_id)
-        barcode_inserted = getattr(view.context,
-                                   BARCODE_INSERTED_ATTR_ID,
-                                   False)
-        self.assertFalse(barcode_inserted)
         messages = IStatusMessage(self.request).show()
         translated_msg = translate(u'barcode_insert_error',
                                    domain='imio.zamqp.pm',
@@ -93,7 +83,6 @@ class TestInsertBarcodeView(BaseTestCase):
 
     def test_next_scan_id_after_barcode_inserted(self):
         """After barcode is inserted"""
-        self.assertIsNone(self.view.context.scan_id)
         self._check_barcode_inserted_correctly()
         self.assertEqual(self.view.context.scan_id, DEFAULT_SCAN_ID)
         self.assertEqual(next_scan_id_pm(), u'013999900000002')

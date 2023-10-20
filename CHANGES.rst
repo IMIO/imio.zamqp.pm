@@ -4,8 +4,9 @@ Changelog
 0.18 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Removed `config.BARCODE_INSERTED_ATTR_ID`, we do not use it anymore to check
+  if a barcode was inserted, we rely on the `scan_id`.
+  [gbastien]
 
 0.17 (2023-09-04)
 -----------------
