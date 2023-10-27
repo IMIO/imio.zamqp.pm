@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.18 (unreleased)
+0.18 (2023-10-27)
 -----------------
 
 - Removed `config.BARCODE_INSERTED_ATTR_ID`, we do not use it anymore to check
