@@ -122,7 +122,7 @@ class TestConsumer(BaseTestCase):
         self.assertEqual(original_annex_type.id, 'financial-analysis')
         self.assertEqual(
             original_annex_type_uid,
-            annex.categorized_elements[annex_uid]['category_uid'])
+            item.categorized_elements[annex_uid]['category_uid'])
 
         # nothing done if nothing defined
         self.assertIsNone(original_annex_type.after_scan_change_annex_type_to)
@@ -133,7 +133,7 @@ class TestConsumer(BaseTestCase):
         # categorized_elements
         self.assertEqual(
             original_annex_type_uid,
-            annex.categorized_elements[annex_uid]['category_uid'])
+            item.categorized_elements[annex_uid]['category_uid'])
         # attributes are still correct
         self.assertTrue(annex.confidential)
         self.assertFalse(annex.publishable)
@@ -150,7 +150,7 @@ class TestConsumer(BaseTestCase):
         # categorized_elements
         self.assertEqual(
             original_annex_type_uid,
-            annex.categorized_elements[annex_uid]['category_uid'])
+            item.categorized_elements[annex_uid]['category_uid'])
 
         # get another annex_type and set it as after_scan_change_annex_type_to
         another_annex_type = original_annex_type.aq_parent.get('budget-analysis')
@@ -169,7 +169,7 @@ class TestConsumer(BaseTestCase):
         # categorized_elements
         self.assertEqual(
             another_annex_type_uid,
-            annex.categorized_elements[annex_uid]['category_uid'])
+            item.categorized_elements[annex_uid]['category_uid'])
         # attributes were updated
         self.assertFalse(annex.confidential)
         self.assertTrue(annex.publishable)
@@ -206,7 +206,7 @@ class TestConsumer(BaseTestCase):
         self.assertEqual(original_annex_type.id, 'financial-analysis')
         self.assertEqual(
             original_annex_type_uid,
-            annex.categorized_elements[annex_uid]['category_uid'])
+            item.categorized_elements[annex_uid]['category_uid'])
         self.assertEqual(
             original_annex_type.get_category_group().getId(), 'item_annexes')
         # annex_decision
@@ -239,7 +239,7 @@ class TestConsumer(BaseTestCase):
         # categorized_elements
         self.assertEqual(
             original_annex_decision_type_uid,
-            annex.categorized_elements[annex_uid]['category_uid'])
+            item.categorized_elements[annex_uid]['category_uid'])
 
         # annex_decision
         annex_decision_updater.create_or_update()

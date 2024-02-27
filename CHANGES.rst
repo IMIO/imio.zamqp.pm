@@ -4,8 +4,9 @@ Changelog
 0.19 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Adapted tests in which `annex.categorized_elements` was used instead
+  `item.categorized_elements`.
+  [gbastien]
 
 0.18 (2023-10-27)
 -----------------
