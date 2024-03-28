@@ -3,7 +3,6 @@
 # GNU General Public License (GPL)
 #
 
-from imio.helpers.content import base_getattr
 from imio.helpers.pdf import BarcodeStamp
 from imio.zamqp.pm.interfaces import IImioZamqpPMSettings
 from imio.zamqp.pm.utils import next_scan_id_pm
