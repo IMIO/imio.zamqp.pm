@@ -7,6 +7,9 @@ Changelog
 - Adapted tests in which `annex.categorized_elements` was used instead
   `item.categorized_elements`.
   [gbastien]
+- Removed dependency on `imio.annex:zamqp` profile as `imio.annex` default
+  profile now includes the `IScanFields` behavior and `zamqp` profile was removed.
+  [gbastien]
 
 0.18 (2023-10-27)
 -----------------
