@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.19 (unreleased)
+0.19 (2025-12-16)
 -----------------
 
 - Adapted tests in which `annex.categorized_elements` was used instead
