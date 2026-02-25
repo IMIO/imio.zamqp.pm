@@ -4,8 +4,9 @@ Changelog
 0.20 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Call `_update_esign_session` in `IconifiedAnnex.update` if file is managed
+  by an `esign` session.
+ [gbastien]
 
 0.19 (2025-12-16)
 -----------------

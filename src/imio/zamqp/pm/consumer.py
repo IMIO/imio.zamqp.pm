@@ -87,6 +87,9 @@ class IconifiedAnnex(DMSMainFile):
         the_file.signed = True
         # update scan attributes like 'pages_number', 'scan_date', ...
         self.set_scan_attr(the_file)
+        # if using imio.esign, update the session state
+        if self.obj.metadata["scanner"] == u"_api_esign_":
+            self._update_esign_session(the_file.UID())
         notify(ObjectModifiedEvent(the_file))
         logger.info("File at \"{0}\" with scan_id \"{1}\" was updated!".format(
             "/".join(the_file.getPhysicalPath()),
