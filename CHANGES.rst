@@ -6,7 +6,10 @@ Changelog
 
 - Call `_update_esign_session` in `IconifiedAnnex.update` if file is managed
   by an `esign` session.
- [gbastien]
+  [gbastien]
+- Make next `scan_id` available in POD template context for any `PloneMeeting`
+  content (to be able to store a meeting annex with `scan_id`).
+  [gbastien]
 
 0.19 (2025-12-16)
 -----------------

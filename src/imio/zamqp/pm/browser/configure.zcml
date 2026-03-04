@@ -10,7 +10,7 @@
 
     <!-- document-generation view -->
     <browser:page
-        for="Products.PloneMeeting.interfaces.IMeetingItem"
+        for="Products.PloneMeeting.interfaces.IMeetingContent"
         name="document-generation"
         class=".overrides.AMQPPMDocumentGenerationView"
         permission="zope2.View" />
