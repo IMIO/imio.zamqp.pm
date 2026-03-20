@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.20 (unreleased)
+0.20 (2026-03-20)
 -----------------
 
 - Call `_update_esign_session` in `IconifiedAnnex.update` if file is managed
