@@ -4,8 +4,8 @@ Changelog
 0.21 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Added `insert-barcode` batch action for annexes.
+  [gbastien]
 
 0.20 (2026-03-20)
 -----------------

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from AccessControl import Unauthorized
 from imio.prettylink.interfaces import IPrettyLink
 from imio.zamqp.pm.interfaces import IImioZamqpPMSettings
 from imio.zamqp.pm.tests.base import BaseTestCase
@@ -95,8 +96,10 @@ class TestInsertBarcodeView(BaseTestCase):
 
         # as normal user, able to edit but not able to insert barcode
         self.changeUser('pmCreator1')
+        self.assertFalse(cfg.getAnnexEditorMayInsertBarcode())
         self.assertTrue(self.member.has_permission(ModifyPortalContent, self.view.context))
         self.assertFalse(self.view.may_insert_barcode())
+        self.assertRaises(Unauthorized, self.view)
 
         # now as MeetingManager
         self.changeUser('pmManager')
@@ -108,7 +111,6 @@ class TestInsertBarcodeView(BaseTestCase):
 
         # when MeetingConfig.annexEditorMayInsertBarcode is True, an editor may insert barcode
         self.changeUser('pmCreator1')
-        self.assertFalse(cfg.getAnnexEditorMayInsertBarcode())
         cfg.setAnnexEditorMayInsertBarcode(True)
         # clean borg.localroles
         cleanMemoize(self.portal, prefixes=['borg.localrole.workspace.checkLocalRolesAllowed'])
