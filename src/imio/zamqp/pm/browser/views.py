@@ -6,6 +6,7 @@
 from AccessControl import Unauthorized
 from collective.eeafaceted.batchactions import _
 from collective.eeafaceted.batchactions.browser.views import BaseBatchActionForm
+from imio.actionspanel.interfaces import IContentDeletable
 from imio.helpers.pdf import BarcodeStamp
 from imio.zamqp.pm.interfaces import IImioZamqpPMSettings
 from imio.zamqp.pm.utils import next_scan_id_pm
@@ -131,14 +132,17 @@ class InsertBarcodeView(BrowserView):
 
     def may_insert_barcode(self):
         """By default, must be (Meeting)Manager to include barcode and
-           barcode must not be already inserted."""
+           barcode must not be already inserted.
+           But if user can insert barcode and annex editable or
+           annexDecision deletable, it can also insert a barcode."""
         res = False
         if self.tool.getEnableScanDocs():
             cfg = self.tool.getMeetingConfig(self.context)
-            # is manager and no barcode already inserted and element still editable
             if (self.tool.isManager(cfg) or cfg.getAnnexEditorMayInsertBarcode()) and \
                not self.context.scan_id and \
-               _checkPermission(ModifyPortalContent, self.context):
+               (_checkPermission(ModifyPortalContent, self.context)
+                    or (self.context.portal_type == 'annexDecision' and
+                        IContentDeletable(self.context).mayDelete())):
                 res = True
         return res
 
@@ -160,21 +164,20 @@ class InsertBarcodeBatchActionForm(BaseBatchActionForm):
         """ """
         res = False
         if "insert-barcode" in self.cfg.getEnabledAnnexesBatchActions():
+            if self.tool.isManager(self.cfg):
+                return True
             parent = self.context.aq_parent
             meta_type = parent.getTagName()
-            if meta_type == "Meeting" and self.tool.isManager(self.cfg):
+            if meta_type == "MeetingItem" and \
+               is_proposing_group_editor(parent.getProposingGroup(), self.cfg):
                 res = True
-            elif meta_type == "MeetingItem" and \
-                    is_proposing_group_editor(parent.getProposingGroup(), self.cfg):
-                res = True
-            elif meta_type == "MeetingAdvice" and (
-                    self.tool.isManager(self.cfg) or _checkPermission(ModifyPortalContent, parent)):
+            elif meta_type == "MeetingAdvice" and _checkPermission(ModifyPortalContent, parent):
                 res = True
         return res
 
     def _apply(self, **data):
         """ """
-        success = 0
+        success = []
         failed = []
         for brain in self.brains:
             obj = brain.getObject()
@@ -182,17 +185,24 @@ class InsertBarcodeBatchActionForm(BaseBatchActionForm):
             if insert_barcode_view.may_insert_barcode():
                 res = insert_barcode_view(redirect=False)
                 if res:
-                    success += 1
+                    success.append(u'"{0}"'.format(safe_unicode(obj.Title())))
                 else:
                     failed.append(u'"{0}"'.format(safe_unicode(obj.Title())))
             else:
                 failed.append(u'"{0}"'.format(safe_unicode(obj.Title())))
-        msg = translate('insert_barcode_batch_action_result',
-                        domain="PloneMeeting",
-                        mapping={'success': success,
-                                 'num_failed': len(failed),
-                                 'failed': u", ".join(failed) or u'-'},
-                        context=self.request,
-                        default="Barcode was inserted in ${success} annexes and "
-                        "failed for ${num_failed} following annexes: ${failed}.")
-        api.portal.show_message(msg, request=self.request)
+        if success:
+            msg = translate('insert_barcode_batch_action_success',
+                            domain="PloneMeeting",
+                            mapping={'num_success': len(success),
+                                     'success': u", ".join(success)},
+                            context=self.request,
+                            default="Barcode was inserted in ${num_success} following annexes: ${success}.")
+            api.portal.show_message(msg, request=self.request)
+        if failed:
+            msg = translate('insert_barcode_batch_action_failed',
+                            domain="PloneMeeting",
+                            mapping={'num_failed': len(failed),
+                                     'failed': u", ".join(failed)},
+                            context=self.request,
+                            default="Barcode failed to be inserted for ${num_failed} following annexes: ${failed}.")
+            api.portal.show_message(msg, type='warning', request=self.request)
