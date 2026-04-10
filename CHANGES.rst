@@ -5,6 +5,10 @@ Changelog
 -----------------
 
 - Added `insert-barcode` batch action for annexes.
+  This relies on adapted `InsertBarcodeView.may_insert_barcode` that let insert
+  a barcode in an `annexDecision` by owner if
+  `MeetingConfig.annexEditorMayInsertBarcode` and
+  `MeetingConfig.ownerMayDeleteAnnexDecision`.
   [gbastien]
 
 0.20 (2026-03-20)

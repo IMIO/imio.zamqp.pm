@@ -21,10 +21,10 @@ class TestInsertBarcodeView(BaseTestCase):
         super(TestInsertBarcodeView, self).setUp()
         self.changeUser('pmManager')
         self.item = self.create('MeetingItem')
-        annex_txt = self.addAnnex(self.item)
-        annex_pdf = self.addAnnex(self.item, annexFile=self.annexFilePDF)
-        self.view = annex_pdf.restrictedTraverse('@@insert-barcode')
-        self.view_txt = annex_txt.restrictedTraverse('@@insert-barcode')
+        self.annex_txt = self.addAnnex(self.item)
+        self.annex_pdf = self.addAnnex(self.item, annexFile=self.annexFilePDF)
+        self.view = self.annex_pdf.restrictedTraverse('@@insert-barcode')
+        self.view_txt = self.annex_txt.restrictedTraverse('@@insert-barcode')
         # wipeout portal messages
         IStatusMessage(self.request).show()
 
@@ -116,6 +116,43 @@ class TestInsertBarcodeView(BaseTestCase):
         cleanMemoize(self.portal, prefixes=['borg.localrole.workspace.checkLocalRolesAllowed'])
         self.assertTrue(self.member.has_permission(ModifyPortalContent, self.view.context))
         self.assertTrue(self.view.may_insert_barcode())
+        self.view()
+        self.assertEqual(self.catalog(scan_id='013999900000001')[0].UID, self.view.context.UID())
+
+        # when MeetingConfig.ownerMayDeleteAnnexDecision is True, owner may insert barcode
+        self.assertFalse(cfg.getOwnerMayDeleteAnnexDecision())
+        self.proposeItem(self.item)
+        self.assertFalse(self.member.has_permission(ModifyPortalContent, self.view.context))
+        self.assertFalse(self.view.may_insert_barcode())
+        decision_annex = self.addAnnex(self.item, relatedTo='item_decision', annexFile=self.annexFilePDF)
+        view = decision_annex.restrictedTraverse('@@insert-barcode')
+        self.assertFalse(view.may_insert_barcode())
+        cfg.setOwnerMayDeleteAnnexDecision(True)
+        self.assertTrue(view.may_insert_barcode())
+        view()
+        self.assertEqual(self.catalog(scan_id='013999900000002')[0].UID, decision_annex.UID())
+
+    def test_insert_barcode_batch_action(self):
+        """Test the @@insert-barcode-batch-action."""
+        cfg = self.meetingConfig
+        cfg.setAnnexEditorMayInsertBarcode(True)
+        self.changeUser('pmCreator1')
+        self.request['form.widgets.uids'] = u'{0},{1}'.format(
+            self.view.context.UID(), self.view_txt.context.UID())
+        self.request.form['form.widgets.uids'] = self.request['form.widgets.uids']
+        form = self.item.restrictedTraverse('@@insert-barcode-batch-action')
+        # action must be enabled
+        self.assertFalse(form.available())
+        self.assertRaises(Unauthorized, form.update)
+        cfg.setEnabledAnnexesBatchActions(('insert-barcode', ))
+        self.assertTrue(form.available())
+        form.update()
+        self.assertEqual(len(form.brains), 2)
+        self.assertIsNone(self.annex_txt.scan_id)
+        self.assertIsNone(self.annex_pdf.scan_id)
+        form.handleApply(form, None)
+        self.assertIsNone(self.annex_txt.scan_id)
+        self.assertEqual(self.annex_pdf.scan_id, '013999900000001')
 
     def test_leadingIcons_barcode(self):
         """When a barcode is inserted into a file, a relevant leading icon is displayed."""

@@ -142,7 +142,8 @@ class InsertBarcodeView(BrowserView):
                not self.context.scan_id and \
                (_checkPermission(ModifyPortalContent, self.context)
                     or (self.context.portal_type == 'annexDecision' and
-                        IContentDeletable(self.context).mayDelete())):
+                        cfg.getOwnerMayDeleteAnnexDecision() and
+                        IContentDeletable(self.context)._may_delete_decision_annex(self.context.aq_parent))):
                 res = True
         return res
 
@@ -166,12 +167,11 @@ class InsertBarcodeBatchActionForm(BaseBatchActionForm):
         if "insert-barcode" in self.cfg.getEnabledAnnexesBatchActions():
             if self.tool.isManager(self.cfg):
                 return True
-            parent = self.context.aq_parent
-            meta_type = parent.getTagName()
+            meta_type = self.context.getTagName()
             if meta_type == "MeetingItem" and \
-               is_proposing_group_editor(parent.getProposingGroup(), self.cfg):
+               is_proposing_group_editor(self.context.getProposingGroup(), self.cfg):
                 res = True
-            elif meta_type == "MeetingAdvice" and _checkPermission(ModifyPortalContent, parent):
+            elif meta_type == "MeetingAdvice" and _checkPermission(ModifyPortalContent, self.context):
                 res = True
         return res
 
