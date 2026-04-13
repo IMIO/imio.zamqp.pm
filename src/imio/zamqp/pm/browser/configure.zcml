@@ -21,4 +21,11 @@
       class=".views.InsertBarcodeView"
       permission="zope2.View" />
 
+    <!-- insert-barcode batch action -->
+    <browser:page
+        for="Products.PloneMeeting.interfaces.IMeetingContentBatchActionsMarker"
+        name="insert-barcode-batch-action"
+        class=".views.InsertBarcodeBatchActionForm"
+        permission="zope2.View" />
+
 </configure>

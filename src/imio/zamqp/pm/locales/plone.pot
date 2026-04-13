@@ -11,5 +11,6 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: plone\n"
 
+#. Default: "Insert barcode"
 msgid "Insert barcode"
 msgstr ""

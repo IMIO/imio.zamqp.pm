@@ -1,4 +1,4 @@
-files="imio.history imio.zamqp.pm plone"
+files="collective.eeafaceted.batchactions imio.history imio.zamqp.pm plone"
 languages="en fr"
 
 for file in $files; do

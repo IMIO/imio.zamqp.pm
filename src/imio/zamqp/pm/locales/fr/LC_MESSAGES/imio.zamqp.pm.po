@@ -53,3 +53,11 @@ msgstr "Code-barres inséré avec succès!"
 #. Default: "A barcode is inserted into this annex."
 msgid "icon_help_barcode_inserted"
 msgstr "Un code-barres a été inséré dans cette annexe"
+
+#. Default: "Barcode failed to be inserted for ${num_failed} following annexes: ${failed}."
+msgid "insert_barcode_batch_action_failed"
+msgstr "Impossible d'insérer le code-barres dans les ${num_failed} annexe(s) suivante(s): ${failed}."
+
+#. Default: "Barcode was inserted in ${num_success} following annexes: ${success}."
+msgid "insert_barcode_batch_action_success"
+msgstr "Code-barres inséré(s) dans les ${num_success} annexe(s) suivante(s): ${success}."

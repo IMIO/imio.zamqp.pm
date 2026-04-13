@@ -37,6 +37,7 @@ setup(
     install_requires=[
         'setuptools',
         'collective.dms.scanbehavior',
+        'imio.actionspanel',
         'imio.helpers[pdf]',
         'imio.zamqp.core',
         'Products.PloneMeeting',
