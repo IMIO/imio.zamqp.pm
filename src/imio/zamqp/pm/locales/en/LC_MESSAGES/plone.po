@@ -14,5 +14,6 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: DOMAIN\n"
 
+#. Default: "Insert barcode"
 msgid "Insert barcode"
 msgstr "Insert barcode"

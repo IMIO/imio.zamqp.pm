@@ -1,7 +1,10 @@
+# --- PLEASE EDIT THE LINES BELOW CORRECTLY ---
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2005-05-17 15:00-100\n"
+"POT-Creation-Date: 2016-11-21 16:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,8 +15,8 @@ msgstr ""
 "Language-Code: en\n"
 "Language-Name: English\n"
 "Preferred-Encodings: utf-8 latin1\n"
-"Domain: DOMAIN\n"
+"Domain: collective.eeafaceted.batchactions\n"
 
 #. Default: "Insert barcode"
-msgid "Insert barcode"
-msgstr "Insérer un code-barres"
+msgid "insert-barcode-batch-action-but"
+msgstr ""

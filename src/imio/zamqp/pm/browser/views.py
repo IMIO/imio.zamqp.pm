@@ -143,7 +143,8 @@ class InsertBarcodeView(BrowserView):
                (_checkPermission(ModifyPortalContent, self.context)
                     or (self.context.portal_type == 'annexDecision' and
                         cfg.getOwnerMayDeleteAnnexDecision() and
-                        IContentDeletable(self.context)._may_delete_decision_annex(self.context.aq_parent))):
+                        IContentDeletable(self.context)._may_delete_decision_annex(
+                            self.context.aq_parent))):
                 res = True
         return res
 
@@ -152,7 +153,6 @@ class InsertBarcodeBatchActionForm(BaseBatchActionForm):
 
     label = _("insert-barcode-batch-action-but")
     button_with_icon = True
-    apply_button_title = _('Insert barcode')
     section = "annexes"
 
     def __init__(self, context, request):
@@ -192,7 +192,7 @@ class InsertBarcodeBatchActionForm(BaseBatchActionForm):
                 failed.append(u'"{0}"'.format(safe_unicode(obj.Title())))
         if success:
             msg = translate('insert_barcode_batch_action_success',
-                            domain="PloneMeeting",
+                            domain="imio.zamqp.pm",
                             mapping={'num_success': len(success),
                                      'success': u", ".join(success)},
                             context=self.request,
@@ -200,7 +200,7 @@ class InsertBarcodeBatchActionForm(BaseBatchActionForm):
             api.portal.show_message(msg, request=self.request)
         if failed:
             msg = translate('insert_barcode_batch_action_failed',
-                            domain="PloneMeeting",
+                            domain="imio.zamqp.pm",
                             mapping={'num_failed': len(failed),
                                      'failed': u", ".join(failed)},
                             context=self.request,
