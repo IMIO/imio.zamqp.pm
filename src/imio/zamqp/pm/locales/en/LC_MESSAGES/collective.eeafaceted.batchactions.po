@@ -16,4 +16,4 @@ msgstr ""
 
 #. Default: "Insert barcode"
 msgid "insert-barcode-batch-action-but"
-msgstr ""
+msgstr "Insert barcode"

@@ -16,8 +16,8 @@ msgstr ""
 
 #. Default: "Versioned before barcode is inserted into the file."
 msgid "Versioned before barcode is inserted into the file."
-msgstr ""
+msgstr "Versioned before barcode is inserted into the file."
 
 #. Default: "Versioned before scanned file was reinjected."
 msgid "Versioned before scanned file was reinjected."
-msgstr ""
+msgstr "Versioned before scanned file was reinjected."

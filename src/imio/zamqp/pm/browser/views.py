@@ -181,7 +181,7 @@ class InsertBarcodeBatchActionForm(BaseBatchActionForm):
         failed = []
         for brain in self.brains:
             obj = brain.getObject()
-            insert_barcode_view = obj.restrictedTraverse('insert-barcode')
+            insert_barcode_view = obj.restrictedTraverse('@@insert-barcode')
             if insert_barcode_view.may_insert_barcode():
                 res = insert_barcode_view(redirect=False)
                 if res:

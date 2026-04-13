@@ -16,11 +16,11 @@ msgstr ""
 
 #. Default: "Save a version of the annex when inserting the barcode."
 msgid "Save a version of the annex when inserting the barcode."
-msgstr ""
+msgstr "Save a version of the annex when inserting the barcode."
 
 #. Default: "Save a version of the annex when reinjecting the scanned file."
 msgid "Save a version of the annex when reinjecting the scanned file."
-msgstr ""
+msgstr "Save a version of the annex when reinjecting the scanned file."
 
 #. Default: "Value of scale when inserting barcode into a PDF file."
 msgid "Value of scale when inserting barcode into a PDF file."
@@ -56,8 +56,8 @@ msgstr "A barcode is inserted into this annex."
 
 #. Default: "Barcode failed to be inserted for ${num_failed} following annexes: ${failed}."
 msgid "insert_barcode_batch_action_failed"
-msgstr ""
+msgstr "Barcode failed to be inserted for ${num_failed} following annexes: ${failed}."
 
 #. Default: "Barcode was inserted in ${num_success} following annexes: ${success}."
 msgid "insert_barcode_batch_action_success"
-msgstr ""
+msgstr "Barcode was inserted in ${num_success} following annexes: ${success}."
