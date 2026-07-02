@@ -80,10 +80,13 @@ class IconifiedAnnex(DMSMainFile):
                 comment='Versioned before scanned file was reinjected.')
 
         setattr(the_file, 'file', obj_file)
+        # workaround strange rare but were to_sign attribute is not set
+        # and this fails in _manage_after_scan_change_annex_type_to when changing content_category
+        # that will change default values
+        the_file.to_sign = True
         # right, get the_file content_category object and check after_scan_change_annex_type_to
         self._manage_after_scan_change_annex_type_to(the_file)
         # an updated annex is de facto considered as a signed version
-        the_file.to_sign = True
         the_file.signed = True
         # update scan attributes like 'pages_number', 'scan_date', ...
         self.set_scan_attr(the_file)

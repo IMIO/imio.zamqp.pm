@@ -4,8 +4,10 @@ Changelog
 0.22 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Warkaround strange rare issue in `IconifiedAnnex.update` were the
+  `annex.to_sign` attribute does not exist and fails to change `content_category`
+  that will change default values (`_content_category_changed_default_values`).
+  [gbastien]
 
 0.21 (2026-04-14)
 -----------------
