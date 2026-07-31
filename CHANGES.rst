@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.22 (unreleased)
+0.22 (2026-07-31)
 -----------------
 
 - Warkaround strange rare issue in `IconifiedAnnex.update` were the
