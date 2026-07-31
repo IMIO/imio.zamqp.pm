@@ -83,6 +83,7 @@ class IconifiedAnnex(DMSMainFile):
         # workaround strange rare but were to_sign attribute is not set
         # and this fails in _manage_after_scan_change_annex_type_to when changing content_category
         # that will change default values
+        # this should be fixed nevertheless in collective.iconifiedcategory>=0.76
         the_file.to_sign = True
         # right, get the_file content_category object and check after_scan_change_annex_type_to
         self._manage_after_scan_change_annex_type_to(the_file)
